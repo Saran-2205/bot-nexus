@@ -21,22 +21,15 @@ const LoginPage = () => {
   } = useMutation({
     mutationFn: async ({ username, password }) => {
       try {
-        const res = await axios.post("/api/admin/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-          credentials: "include", // Include cookies for session management
-        });
+        const res = await axios.post(
+          "/api/admin/auth/login",
+          { username, password },
+          { withCredentials: true }
+        );
 
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
+        return res.data;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error.response?.data?.error || "Something went wrong");
       }
     },
     onSuccess: () => {

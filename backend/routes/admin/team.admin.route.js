@@ -1,16 +1,25 @@
-import express from 'express';
-import {getAllTeamMembers, getTeamMemberByParams, createTeamMember, updateTeamMember, deleteTeamMember} from '../../controllers/team.controller.js';
+import express from "express";
+import {
+  getAllTeamMembers,
+  getTeamMemberByParams,
+  createTeamMember,
+  updateTeamMember,
+  deleteTeamMember,
+  searchTeamMember,
+} from "../../controllers/team.controller.js";
 
 const router = express.Router();
 
-router.get('/', getAllTeamMembers);
+router.get("/", getAllTeamMembers);
 
-router.get('/:param', getTeamMemberByParams);
+router.get("/:param", getTeamMemberByParams);
 
-router.post('/create', createTeamMember);
+router.post("/create", createTeamMember);
 
-router.patch('/:param', updateTeamMember);
+router.get("/search", searchTeamMember);
 
-router.delete('/:param', deleteTeamMember);
+router.patch("/:param", updateTeamMember);
+
+router.delete("/:param", deleteTeamMember);
 
 export default router;

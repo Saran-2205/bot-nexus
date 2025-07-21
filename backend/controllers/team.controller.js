@@ -201,6 +201,20 @@ export const updateTeamMember = async (req, res) => {
   }
 };
 
+export const searchTeamMember = async (req, res) => {
+  try {
+    const query = req.query.query || "";
+    const members = await TeamMember.find({
+      name: { $regex: query, $options: "i" },
+    }).limit(5);
+
+    res.json(members);
+  } catch (error) {
+    console.log("Error in searchTeamMember Controller", error);
+    res.status(500).json({error:"Internal Server Error"});
+  }
+}
+
 export const deleteTeamMember = async (req, res) => {
   try {
     const { param } = req.params;

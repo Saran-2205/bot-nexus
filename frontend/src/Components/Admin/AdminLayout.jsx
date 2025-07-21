@@ -31,7 +31,7 @@ const AdminLayout = () => {
             to="/nexus-hq/dashboard"
             className="text-md py-3 px-4 border border-none hover:bg-[#2196F3] rounded-[8px] mx-4 transition-all cursor-pointer duration-300"
           >
-            <i class="fa-solid fa-house mx-2"></i> Dashboard
+            <i className="fa-solid fa-house mx-2"></i> Dashboard
           </NavLink>
           <NavLink
             to="/nexus-hq/projects"

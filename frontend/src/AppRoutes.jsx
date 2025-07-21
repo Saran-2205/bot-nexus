@@ -7,20 +7,20 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import Footer from "./Components/Public/Footer.jsx";
 import Navbar from "./Components/Public/Navbar.jsx";
-import ScrollToTop from "./Components/ScrollToTop";
+import ScrollToTop from "./Components/ScrollToTop.jsx";
 import LoadingSpinner from "./Components/LoadingSpinner.jsx";
 
 // Public Pages
-import Home from "./Pages/Public/Home";
-import About from "./Pages/Public/About";
-import Blog from "./Pages/Public/Blog";
-import Competitions from "./Pages/Public/Competitions";
-import Team from "./Pages/Public/Team";
-import Projects from "./Pages/Public/Projects";
+import Home from "./Pages/Public/Home.jsx";
+import About from "./Pages/Public/About.jsx";
+import Blog from "./Pages/Public/Blog.jsx";
+import Competitions from "./Pages/Public/Competitions.jsx";
+import Team from "./Pages/Public/Team.jsx";
+import Projects from "./Pages/Public/Projects.jsx";
 
 // Lazy Admin Pages
-const LoginPage = lazy(() => import("./Pages/Admin/LoginPage"));
-const Dashboard = lazy(() => import("./Pages/Admin/Dashboard"));
+const LoginPage = lazy(() => import("./Pages/Admin/LoginPage.jsx"));
+const Dashboard = lazy(() => import("./Pages/Admin/Dashboard.jsx"));
 const ProjectsPage = lazy(() => import("./Pages/Admin/Projects/ProjectsPage.jsx"));
 const CreateProject = lazy(() => import("./Pages/Admin/Projects/CreateProject.jsx"));
 const EditProject = lazy(() => import("./Pages/Admin/Projects/EditProject.jsx"));
@@ -78,16 +78,16 @@ const AppRoutes = () => {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="projects/create" element={<CreateProject />} />
-            <Route path="projects/:slug/edit" element={<EditProject />} />
+            <Route path="projects/edit/:slug" element={<EditProject />} />
             <Route path="competitions" element={<CompetitionsPage />} />
             <Route path="competitions/create" element={<CreateCompetition />} />
-            <Route path="competitions/:slug/edit" element={<EditCompetition />} />
+            <Route path="competitions/edit/:slug" element={<EditCompetition />} />
             <Route path="team" element={<TeamPage />} />
             <Route path="team/create" element={<CreateTeam />} />
-            <Route path="team/:slug/edit" element={<EditTeam />} />
+            <Route path="team/edit/:slug" element={<EditTeam />} />
             <Route path="blog" element={<BlogsPage />} />
             <Route path="blog/create" element={<CreateBlog />} />
-            <Route path="blog/:slug/edit" element={<EditBlog />} />
+            <Route path="blog/edit/:slug" element={<EditBlog />} />
           </Route>
           <Route
             path="*"

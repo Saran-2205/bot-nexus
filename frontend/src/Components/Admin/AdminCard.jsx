@@ -1,20 +1,20 @@
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const AdminCard = ({ 
-  title, 
-  subtitle, 
-  badge, 
-  image, 
-  editLink, 
-  onDelete, 
-  isDeleting 
+const AdminCard = ({
+  title,
+  subtitle,
+  badge,
+  image,
+  editLink,
+  onDelete,
+  isDeleting,
 }) => {
   return (
     <div className="bg-[#1a1a2e]/50 border border-[#E53935]/50 hover:border-[#2196F3]/50 p-5 rounded-xl shadow-md hover:shadow-[0_0_20px_rgba(33,150,243,0.3)] transition">
       <div className="relative h-48 overflow-hidden">
         <img
-          src={image}
+          src={image || "/project-icon.jpg"}
           alt={title}
           className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
           loading="lazy"
@@ -31,10 +31,12 @@ const AdminCard = ({
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-sm text-gray-300 line-clamp-3">{subtitle}</p>
       <div className="flex justify-end mt-4 gap-3">
-        <Link to={editLink} className="text-[#2196F3]"><FaEdit /></Link>
-        <button 
-          onClick={onDelete} 
-          className="text-[#E53935] cursor-pointer" 
+        <Link to={editLink} className="text-[#2196F3]">
+          <FaEdit />
+        </Link>
+        <button
+          onClick={onDelete}
+          className="text-[#E53935] cursor-pointer"
           disabled={isDeleting}
         >
           {isDeleting ? "..." : <FaTrashAlt />}

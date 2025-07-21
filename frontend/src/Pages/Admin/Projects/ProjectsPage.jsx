@@ -46,7 +46,7 @@ const ProjectsPage = () => {
             subtitle={project.shortDesc}
             badge={project.category}
             image={project.img}
-            editLink={`/nexus-hq/projects/${project.slug}/edit`}
+            editLink={`/nexus-hq/projects/edit/${project.slug}`}
             onDelete={() => handleDeleteClick(project._id)}
             isDeleting={deletingId === project._id}
           />
