@@ -4,64 +4,55 @@ import { convertDriveLink } from "../lib/utils/convertDriveLink.js";
 
 const competitionSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    slug: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
-    category: {
-      type: String,
-      trim: true,
-    },
-    img: {
-      type: String, // URL for competition hero image
-    },
-    shortDesc: {
-      type: String,
-      trim: true,
-    },
-    overview: {
-      type: String,
-    },
-    competitionDetails: {
-      venue: { type: String, trim: true },
-      teamSize: { type: Number, min: 1 },
-      teamMembers: [{
+    title: { type: String, required: true },                // e.g., "RoboWars 2025"
+    slug: { type: String, required: true, unique: true },   // auto-generated from title
+    category: { type: String, required: true },             // e.g., "Combat Robotics"
+    place: { type: String },                                // e.g., "1st Place"
+    date: { type: Date, required: true },                   // e.g., "2025-03-15"
+    venue: { type: String, required: true },                // e.g., "New Delhi, India"
+
+    // Hero & media
+    heroImg: { type: String, required: true },              // Hero background image URL
+    gallery: [{ type: String }],                            // Media gallery (array of image/video URLs)
+
+    // Descriptions
+    shortDesc: { type: String },                            // Short summary
+    overview: { type: String },                             // Detailed description
+
+    // Key stats
+    stats:[
+      {
+        key: { type: String, required: true, trim: true },
+        value: { type: String, required: true, trim: true },
+      },
+    ],
+
+    // Technical specifications
+    technicalSpecifications: [
+      {
+        key: { type: String, required: true, trim: true },
+        value: { type: String, required: true, trim: true },
+      },
+    ],
+
+    // Key technologies/features
+    keyTechnologies: [
+      {
+        title: { type: String, required: true },
+        description: { type: String },
+      },
+    ],
+
+    // Team members (ref to Team collection)
+    teamMembers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Team", // Reference to Team model
       }],
-      participants: { type: Number, min: 1 }, // Total participants
-      prizeDetails: { type: String, trim: true }, // Details about prizes
-      prize: { type: String, trim: true }, // Could be redundant with prizeDetails; pick one
-      date: { type: Date },
-      time: { type: String },
-      technical: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Project",
-      }],
-    },
-    gallery: [
-      {
-        type: String,
-      },
-    ], // Array of URLs for images/videos
-    tags: [
-      {
-        type: String,
-        lowercase: true,
-        trim: true,
-      },
-    ],
+    tags: [{ type: String }],                               // e.g., ["combat", "robotics", "asia"]
   },
   { timestamps: true }
-); // Adds createdAt and updatedAt automatically
+);
+
 
 
 competitionSchema.pre("validate", function (next) {

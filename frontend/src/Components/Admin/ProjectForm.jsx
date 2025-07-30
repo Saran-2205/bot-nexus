@@ -1,5 +1,6 @@
 // ProjectForm.js
 import { useEffect, useState } from "react";
+import axios from "axios";
 // helper function to convert file to base64
 const fileToBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -11,7 +12,10 @@ const fileToBase64 = (file) => {
 };
 
 const ProjectForm = ({ onSubmit, initialData = {} }) => {
-  const [allMembers, setAllMembers] = useState([]);
+  const [teamMemberInput, setTeamMemberInput] = useState("");
+  const [teamMemberSuggestions, setTeamMemberSuggestions] = useState([]);
+  const [showTeamSuggestions, setShowTeamSuggestions] = useState(false);
+  const [allTeamMembers, setAllTeamMembers] = useState([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -21,7 +25,7 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
     overview: "",
     desc: "",
     coreObjectives: [""],
-    team: [""],
+    team: [],
     technicalSpecifications: [{ key: "", value: "" }],
     technologies: [""],
     progress: 0,
@@ -34,6 +38,7 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
   // Update form data if initialData changes (for edit mode)
   useEffect(() => {
     if (initialData && Object.keys(initialData).length > 0) {
+      const isTeamObjects = initialData.team?.[0]?.name;
       setFormData({
         title: initialData.title || "",
         shortDesc: initialData.shortDesc || "",
@@ -41,7 +46,9 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
         overview: initialData.overview || "",
         desc: initialData.desc || "",
         coreObjectives: initialData.coreObjectives || [""],
-        team: initialData.team || [""],
+        team: isTeamObjects
+          ? initialData.team.map((m) => m._id)
+          : initialData.team || [],
         technicalSpecifications: initialData.technicalSpecifications?.length
           ? initialData.technicalSpecifications
           : [{ key: "", value: "" }],
@@ -54,26 +61,80 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
           ? initialData.milestones
           : [{ title: "", description: "", date: "" }],
       });
+      if (isTeamObjects) {
+        setAllTeamMembers(initialData.team);
+      }
     }
   }, [initialData]);
 
+  // Add this function to fetch team members (call it in useEffect if needed)
+  const fetchTeamMembers = async (searchTerm = "") => {
+    try {
+      const response = await axios.get(`/api/admin/team?search=${searchTerm}`);
+      const members = response?.data?.teamMembers || [];
+      setTeamMemberSuggestions(Array.isArray(members) ? members : []);
+    } catch (error) {
+      console.error("Error fetching team members:", error);
+    }
+  };
+  // Add this effect to load initial team members
   useEffect(() => {
-    const fetchTeamMembers = async () => {
-      try {
-        const response = await fetch("/api/admin/team"); // or your correct endpoint
-        const data = await response.json();
-        setAllMembers(data.teamMembers.map((m) => m.name)); // ✅ array of strings
-      } catch (error) {
-        console.error("Error fetching members:", error);
-      }
-    };
-
     fetchTeamMembers();
   }, []);
+  // Add these handlers for team member functionality
+  const handleTeamMemberInputChange = async (e) => {
+    const value = e.target.value;
+    setTeamMemberInput(value);
+
+    if (value.length > 1) {
+      try {
+        const response = await axios.get(`/api/admin/team?search=${value}`);
+        const filteredMembers =
+          response.data?.teamMembers?.filter(
+            (member) => !formData.team.includes(member._id) // Exclude already selected members
+          ) || [];
+        setTeamMemberSuggestions(filteredMembers);
+        setShowTeamSuggestions(filteredMembers.length > 0);
+      } catch (error) {
+        console.error("Error searching team members:", error);
+        setTeamMemberSuggestions([]);
+        setShowTeamSuggestions(false);
+      }
+    } else {
+      setTeamMemberSuggestions([]);
+      setShowTeamSuggestions(false);
+    }
+  };
+
+  const handleTeamMemberSelect = (member) => {
+    if (!formData.team.includes(member._id)) {
+      setFormData((prev) => ({
+        ...prev,
+        team: [...prev.team, member._id],
+      }));
+      setAllTeamMembers((prev) =>
+        prev.some((m) => m._id === member._id) ? prev : [...prev, member]
+      );
+    }
+    setTeamMemberInput("");
+    setShowTeamSuggestions(false);
+  };
+
+  const removeTeamMember = (memberId) => {
+    setFormData((prev) => ({
+      ...prev,
+      team: prev.team.filter((id) => id !== memberId),
+    }));
+    setAllTeamMembers((prev) => prev.filter((m) => m._id !== memberId));
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "progress" ? (value === "" ? "" : Number(value)) : value,
+    }));
   };
 
   const handleArrayChange = (key, index, value) => {
@@ -116,9 +177,9 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
           m.title.trim() !== "" || m.description.trim() !== "" || m.date !== ""
       ),
       team: Array.isArray(formData.team)
-        ? formData.team
-            .map((member) => member._id)
-            .filter((id) => typeof id === "string" && id.trim() !== "")
+        ? formData.team.filter(
+            (id) => typeof id === "string" && id.trim() !== ""
+          )
         : [],
       status: formData.status || "ongoing",
     };
@@ -253,100 +314,154 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
         />
       </div>
 
-      {/* Team Members */}
-      <div className="space-y-4">
-        <label className="block text-sm font-medium text-[#E93535] uppercase tracking-wider">
+      {/* Team Members Section - Clean Design */}
+      <div className="mb-8">
+        <label className="block text-sm font-medium text-[#E93535] uppercase tracking-wider mb-5">
           Team Members
         </label>
 
-        <div className="space-y-3">
-          {formData.team?.map((member, idx) => {
-            const filteredSuggestions = allMembers.filter(
-              (name) =>
-                name.toLowerCase().includes(member.toLowerCase()) &&
-                !formData.team.includes(name)
-            );
+        {/* Search Input */}
+        <div className="relative mb-4">
+          <div className="flex items-center bg-gray-800 rounded-md px-4 py-2 border border-gray-700 focus-within:border-[#FF6B6B] transition-colors">
+            <svg
+              className="w-5 h-5 text-gray-400 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              type="text"
+              value={teamMemberInput}
+              onChange={handleTeamMemberInputChange}
+              onFocus={() => setIsInputFocused(true)}
+              onBlur={() => setTimeout(() => setIsInputFocused(false), 100)}
+              className="flex-1 bg-transparent border-none text-white placeholder-gray-500 focus:ring-0 outline-none text-sm"
+              placeholder="Search team members..."
+            />
+          </div>
 
-            return (
-              <div key={idx} className="flex items-center space-x-3">
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    value={member}
-                    onChange={(e) =>
-                      handleArrayChange("team", idx, e.target.value)
-                    }
-                    onFocus={() => setIsInputFocused(true)}
-                    onBlur={() =>
-                      setTimeout(() => setIsInputFocused(false), 100)
-                    }
-                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white"
-                    placeholder="Team member name"
-                    autoComplete="off"
-                  />
-
-                  {/* Suggestions */}
-                  {member && isInputFocused && filteredSuggestions.length > 0 && (
-                    <ul className="absolute z-10 mt-1 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg max-h-40 overflow-auto">
-                      {filteredSuggestions.map((suggestion, sidx) => (
-                        <li
-                          key={sidx}
-                          className="px-4 py-2 hover:bg-[#E93535] text-white hover:text-white cursor-pointer"
-                          onMouseDown={() => handleArrayChange("team", idx, suggestion)}
-                        >
-                          {suggestion}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => removeArrayItem("team", idx)}
-                  className="p-2 text-[#E93535] hover:text-white hover:cursor-pointer hover:bg-[#E93535] rounded-full transition-colors"
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+          {/* Suggestions Dropdown */}
+          {isInputFocused && showTeamSuggestions && teamMemberSuggestions.length > 0 && (
+            <div className="absolute z-10 mt-1 w-full bg-gray-800 rounded-lg shadow-lg border border-gray-700 overflow-hidden max-h-60 overflow-y-auto">
+              {teamMemberSuggestions
+                .filter(
+                  (member) =>
+                    member.name
+                      .toLowerCase()
+                      .includes(teamMemberInput.toLowerCase()) ||
+                    (member.designation &&
+                      member.designation
+                        .toLowerCase()
+                        .includes(teamMemberInput.toLowerCase()))
+                ) // This was the missing parenthesis
+                .map((member) => (
+                  <div
+                    key={member._id}
+                    className="px-4 py-3 hover:bg-gray-700 cursor-pointer flex items-center transition-colors"
+                    onMouseDown={() => handleTeamMemberSelect(member)}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </button>
-              </div>
-            );
-          })}
+                    <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center text-white font-medium">
+                      {member.name.charAt(0)}
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-white">
+                        {member.name
+                          .split(new RegExp(`(${teamMemberInput})`, "gi"))
+                          .map((part, i) =>
+                            part.toLowerCase() ===
+                            teamMemberInput.toLowerCase() ? (
+                              <span
+                                key={i}
+                                className="text-[#FF6B6B] font-bold"
+                              >
+                                {part}
+                              </span>
+                            ) : (
+                              part
+                            )
+                          )}
+                      </p>
+                      {member.designation && (
+                        <p className="text-xs text-gray-400">
+                          {member.designation
+                            .split(new RegExp(`(${teamMemberInput})`, "gi"))
+                            .map((part, i) =>
+                              part.toLowerCase() ===
+                              teamMemberInput.toLowerCase() ? (
+                                <span
+                                  key={i}
+                                  className="text-[#FF6B6B] font-bold"
+                                >
+                                  {part}
+                                </span>
+                              ) : (
+                                part
+                              )
+                            )}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
 
-        <button
-          type="button"
-          onClick={() => addArrayItem("team", "")}
-          className="flex items-center px-4 py-2 text-[#E93535] border border-[#E93535] rounded-lg hover:cursor-pointer hover:bg-[#E93535] hover:text-white transition-colors"
-        >
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          Add Member
-        </button>
+        {/* Selected Members */}
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-gray-400 mb-2">
+            Added Team Members
+          </label>
+          {formData.team.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {allTeamMembers
+                .filter((member) => formData.team.includes(member._id))
+                .map((member) => (
+                  <div
+                    key={member._id}
+                    className="flex items-center justify-between bg-gray-800 rounded-md px-3 py-2 border border-gray-700"
+                  >
+                    <div className="flex items-center">
+                      <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-white text-xs font-medium mr-2">
+                        {member.name.charAt(0)}
+                      </div>
+                      <span className="text-sm text-white">{member.name}</span>
+                    </div>
+                    <button
+                      onClick={() => removeTeamMember(member._id)}
+                      className="p-2 text-[#E93535] hover:text-white hover:cursor-pointer hover:bg-[#E93535] rounded-full transition-colors"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-500 italic">
+              No team members selected
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Core Objectives */}

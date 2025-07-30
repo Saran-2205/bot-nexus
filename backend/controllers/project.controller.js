@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import slugify from "slugify";
 import Project from "../models/project.model.js";
 import Team from "../models/team.model.js";
-import {v2 as cloudinary} from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 export const createProject = async (req, res) => {
   try {
@@ -21,7 +21,7 @@ export const createProject = async (req, res) => {
       status,
       milestones,
     } = req.body;
-    let {img} =req.body
+    let { img } = req.body;
     let uploadedGallery = [];
 
     // Generate slug from title
@@ -49,7 +49,7 @@ export const createProject = async (req, res) => {
         .json({ error: "Short description is required and must be a string." });
 
     // Optional field type checks
-    if (img && !img.startsWith('https://res.cloudinary.com/')) {
+    if (img && !img.startsWith("https://res.cloudinary.com/")) {
       const uploadedResponse = await cloudinary.uploader.upload(img);
       img = uploadedResponse.secure_url;
     }
@@ -190,12 +190,18 @@ export const getProjectByParams = async (req, res) => {
 
     // Check if param is a valid ObjectId
     if (mongoose.Types.ObjectId.isValid(param)) {
-      project = await Project.findById(param).populate("team");
+      project = await Project.findById(param).populate(
+        "team",
+        "_id name designation"
+      );
     }
 
     // If not found by ID or param isn't an ObjectId, try slug
     if (!project) {
-      project = await Project.findOne({ slug: param }).populate("team");
+      project = await Project.findOne({ slug: param }).populate(
+        "team",
+        "_id name designation"
+      );
     }
 
     // If still not found, return 404
@@ -222,7 +228,7 @@ export const updateProject = async (req, res) => {
       return res.status(404).json({ error: "Project not found" });
     }
 
-    const {
+    let {
       title,
       shortDesc,
       img,
@@ -305,6 +311,8 @@ export const updateProject = async (req, res) => {
     if (category && typeof category !== "string")
       return res.status(400).json({ error: "Category must be a string." });
 
+    let uploadedGallery = [];
+
     if (gallery && gallery.length > 0) {
       // Upload all gallery images in parallel
       uploadedGallery = await Promise.all(
@@ -350,7 +358,7 @@ export const updateProject = async (req, res) => {
       ...(progress !== undefined && { progress }),
       ...(team && { team }),
       ...(category && { category }),
-      ...(gallery && { gallery }),
+      ...(gallery && { gallery: uploadedGallery }),
       ...(status && { status }),
       ...(milestones && { milestones }),
     };

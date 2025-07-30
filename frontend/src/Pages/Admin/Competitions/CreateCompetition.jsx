@@ -1,9 +1,52 @@
-import React from 'react'
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
+import ProjectForm from "../../../Components/Admin/CompetitionForm.jsx";
+import CompetitionForm from "../../../Components/Admin/CompetitionForm.jsx";
 
-const CreateCompetition = () => {
+const CreateCompetitionPage = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutate: createMutation } = useMutation({
+    mutationFn: async (formData) => {
+      try {
+        const res = await axios.post("/api/admin/competitions/create", formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        return res.data;
+      } catch (err) {
+        const message =
+          err.response?.data?.error || err.message || "Something went wrong";
+        throw new Error(message);
+      }
+    },
+
+    onSuccess: (data) => {
+      toast.success(data.message || "Competition created successfully");
+      queryClient.invalidateQueries(["competitions"]);
+      navigate("/nexus-hq/competitions");
+    },
+
+    onError: (error) => {
+      toast.error(error.message || "Something went wrong");
+    },
+  });
+
+  const handleCreateCompetition = (formData) => {
+    createMutation(formData);
+  };
+
   return (
-    <div>CreateCompetition</div>
-  )
-}
+    <div className="p-6">
+      <h1 className="text-3xl font-bold text-[#E93535]">Create New Competition</h1>
+      <CompetitionForm onSubmit={handleCreateCompetition} />
+    </div>
+  );
+};
 
-export default CreateCompetition
+export default CreateCompetitionPage;
