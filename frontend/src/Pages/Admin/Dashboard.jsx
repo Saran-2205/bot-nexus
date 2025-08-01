@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../../Components/LoadingSpinner";
@@ -8,23 +7,6 @@ import axios from "axios";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Disable scrolling on mount
-    document.documentElement.style.overflow = "hidden"
-    document.body.style.overflow = 'hidden';
-    
-    if (location.state?.fromLogin) {
-      toast.success("Logged in Successfully");
-      window.history.replaceState({}, document.title);
-    }
-
-    // Re-enable scrolling when component unmounts
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [location]);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["dashboardStats"],
