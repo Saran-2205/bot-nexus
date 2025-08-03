@@ -9,11 +9,11 @@ const Footer = () => {
             <div className="flex font-['Orbitron'] mb-5 items-center text-3xl hover:cursor-pointer">
               <img
                 src="/nav-logo.png"
-                alt="BotNexus Logo"
+                alt="Bot Nexus Logo"
                 width={50}
                 height={40}
               />
-              <span className="text-[#ff2121]">Bot</span>
+              <span className="text-[#ff2121] mr-2">Bot</span>
               <span className="text-white hover:text-[#2196F3]">Nexus</span>
             </div>
             <p className="font-['Roboto'] text-white mb-6">

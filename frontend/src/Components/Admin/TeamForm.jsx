@@ -355,7 +355,7 @@ const TeamForm = ({ onSubmit, initialData = {} }) => {
         >
           {initialData && Object.keys(initialData).length > 0
             ? "Update Team Member"
-            : "Create Team Member"}
+            : "Add Team Member"}
         </button>
       </div>
     </form>

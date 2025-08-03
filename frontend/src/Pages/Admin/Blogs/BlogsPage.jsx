@@ -35,11 +35,11 @@ const BlogsPage = () => {
     <>
       <AdminListLayout
         title="Blogs"
-        createPath="/nexus-hq/blog/create"
+        createPath="/nexus-hq/blog/add"
         isLoading={isLoading}
         isError={isError}
         emptyState={!isLoading && !blogs?.length}
-        emptyStateMessage="No blogs found. Create your first blog!"
+        emptyStateMessage="No blogs found. Add your first blog!"
       >
         {isLoading ? (
           // Enhanced loading skeleton
@@ -89,13 +89,13 @@ const BlogsPage = () => {
               No blogs yet
             </h3>
             <p className="text-gray-600 mb-4">
-              Get started by creating your first blog
+              Get started by adding your first blog
             </p>
             <a
-              href="/nexus-hq/blog/create"
+              href="/nexus-hq/blog/add"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#E93535] hover:bg-[#2196f3] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2196f3]"
             >
-              Create blog
+              Add blog
             </a>
           </div>
         ) : (        

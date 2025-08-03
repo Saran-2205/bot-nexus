@@ -77,16 +77,16 @@ const AppRoutes = () => {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<ProjectsPage />} />
-            <Route path="projects/create" element={<CreateProject />} />
+            <Route path="projects/add" element={<CreateProject />} />
             <Route path="projects/edit/:slug" element={<EditProject />} />
             <Route path="competitions" element={<CompetitionsPage />} />
-            <Route path="competitions/create" element={<CreateCompetition />} />
+            <Route path="competitions/add" element={<CreateCompetition />} />
             <Route path="competitions/edit/:slug" element={<EditCompetition />} />
             <Route path="team" element={<TeamPage />} />
-            <Route path="team/create" element={<CreateTeam />} />
+            <Route path="team/add" element={<CreateTeam />} />
             <Route path="team/edit/:slug" element={<EditTeam />} />
             <Route path="blog" element={<BlogsPage />} />
-            <Route path="blog/create" element={<CreateBlog />} />
+            <Route path="blog/add" element={<CreateBlog />} />
             <Route path="blog/edit/:slug" element={<EditBlog />} />
           </Route>
           <Route

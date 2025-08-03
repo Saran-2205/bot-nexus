@@ -3,7 +3,7 @@ import express from "express";
 const router = express.Router();
 import { getAllProjects, getProjectByParams, createProject, updateProject, deleteProject } from "../../controllers/project.controller.js";
 
-router.post("/create", createProject);
+router.post("/add", createProject);
 
 router.get("/", getAllProjects);
 

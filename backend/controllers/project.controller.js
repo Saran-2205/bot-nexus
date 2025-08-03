@@ -216,6 +216,23 @@ export const getProjectByParams = async (req, res) => {
   }
 };
 
+export const getLatestProject = async (req, res) =>{
+  try {
+    const latestProject = await Project.findOne()
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .select('title img'); // Only return name and imageUrl
+    
+    if (!latestProject) {
+      return res.status(404).json({ message: 'No projects found' });
+    }
+
+    res.json(latestProject);
+  } catch (error) {
+    console.log("Error in getLatestProject Controller", error);
+    res.status(500).json({error:"Internal Server Error"})
+  }
+}
+
 export const updateProject = async (req, res) => {
   try {
     const { param } = req.params;

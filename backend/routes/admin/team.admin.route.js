@@ -14,7 +14,7 @@ router.get("/", getAllTeamMembers);
 
 router.get("/:param", getTeamMemberByParams);
 
-router.post("/create", createTeamMember);
+router.post("/add", createTeamMember);
 
 router.get("/search", searchTeamMember);
 

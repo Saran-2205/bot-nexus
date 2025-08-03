@@ -12,7 +12,7 @@ const competitionSchema = new mongoose.Schema(
     venue: { type: String, required: true },                // e.g., "New Delhi, India"
 
     // Hero & media
-    heroImg: { type: String, required: true },              // Hero background image URL
+    heroImg: { type: String },              // Hero background image URL
     gallery: [{ type: String }],                            // Media gallery (array of image/video URLs)
 
     // Descriptions

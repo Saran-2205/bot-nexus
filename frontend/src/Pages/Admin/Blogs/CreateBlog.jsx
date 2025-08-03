@@ -2,16 +2,16 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
-import BlogForm from "../../../Components/Admin/BlogForm"
+import BlogForm from "../../../Components/Admin/BlogForm";
 
 const CreateBlog = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate: createMutation } = useMutation({
+  const { mutate: createMutation, isLoading } = useMutation({
     mutationFn: async (formData) => {
       try {
-        const res = await axios.post("/api/admin/blog/create", formData, {
+        const res = await axios.post("/api/admin/blog/add", formData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -26,7 +26,7 @@ const CreateBlog = () => {
     },
 
     onSuccess: (data) => {
-      toast.success(data.message || "Blog created successfully");
+      toast.success(data.message || "Blog added successfully");
       queryClient.invalidateQueries(["blog"]);
       navigate("/nexus-hq/blog");
     },
@@ -41,9 +41,25 @@ const CreateBlog = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-[#E93535]">Create New Blog</h1>
-      <BlogForm onSubmit={handleCreateBlog} />
+    <div className="p-6 max-w-5xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-[#E93535] mb-2">Create New Blog Post</h1>
+          <p className="text-gray-600">Share your insights and stories with the community</p>
+        </div>
+        
+      </div>
+      
+      <div className="rounded-lg shadow-md">
+        <div className="p-6">
+          <BlogForm 
+            onSubmit={handleCreateBlog} 
+            isSubmitting={isLoading}
+          />
+        </div>
+        
+        
+      </div>
     </div>
   );
 };

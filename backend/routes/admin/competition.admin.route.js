@@ -7,7 +7,7 @@ router.get('/', getAllCompetitions);
 
 router.get('/:param', getCompetitionByParams);
 
-router.post('/create', createCompetition);
+router.post('/add', createCompetition);
 
 router.patch('/:param', updateCompetition);
 

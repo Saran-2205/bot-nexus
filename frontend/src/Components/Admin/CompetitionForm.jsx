@@ -230,6 +230,7 @@ const CompetitionForm = ({ onSubmit, initialData = {} }) => {
           onChange={handleChange}
           className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white"
           placeholder="e.g., 1st Place"
+          required
         />
       </div>
 
@@ -333,6 +334,7 @@ const CompetitionForm = ({ onSubmit, initialData = {} }) => {
           onChange={handleChange}
           className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white"
           rows={3}
+          required
         />
       </div>
 
@@ -887,7 +889,7 @@ const CompetitionForm = ({ onSubmit, initialData = {} }) => {
         >
           {initialData && Object.keys(initialData).length > 0
             ? "Update Competition"
-            : "Create Competition"}
+            : "Add Competition"}
         </button>
       </div>
     </form>

@@ -35,11 +35,11 @@ const TeamPage = () => {
     <>
       <AdminListLayout
         title="Team Members"
-        createPath="/nexus-hq/team/create"
+        createPath="/nexus-hq/team/add"
         isLoading={isLoading}
         isError={isError}
         emptyState={!isLoading && !teamMembers?.length}
-        emptyStateMessage="No Team Members found. Create your first Team Member!"
+        emptyStateMessage="No Team Members found. Add your first Team Member!"
       >
         {isLoading ? (
           // Enhanced loading skeleton
@@ -66,12 +66,12 @@ const TeamPage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h3 className="text-lg font-medium text-gray-600 mb-2">No Team Members yet</h3>
-            <p className="text-gray-600 mb-4">Get started by creating your first Team Member</p>
+            <p className="text-gray-600 mb-4">Get started by adding your first Team Member</p>
             <a
-              href="/nexus-hq/team/create"
+              href="/nexus-hq/team/add"
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#E93535] hover:bg-[#2196f3] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2196f3]"
             >
-              Create Team Member
+              Add Team Member
             </a>
           </div>
         ) : (

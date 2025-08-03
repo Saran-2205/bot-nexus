@@ -5,13 +5,13 @@ import { FaPlus } from "react-icons/fa";
 const AdminListLayout = ({ 
   title, 
   createPath, 
-  createText = "Create New", 
+  createText = "Add New", 
   isLoading, 
   isError, 
   errorMessage = "Failed to load data. Please try again.", 
   children,
   isEmpty,
-  emptyMessage = `No ${title?.toLowerCase()} found. Create one to get started!`
+  emptyMessage = `No ${title?.toLowerCase()} found. Add one to get started!`
 }) => {
   return (
     <div className="p-6 text-white">
@@ -50,7 +50,7 @@ const AdminListLayout = ({
               className="inline-flex items-center gap-2 bg-[#E93535] hover:bg-[#2196f3] text-black hover:text-white px-4 py-2 rounded transition-colors duration-200"
             >
               <FaPlus />
-              <span>Create {title}</span>
+              <span>Add {title}</span>
             </Link>
           )}
         </div>

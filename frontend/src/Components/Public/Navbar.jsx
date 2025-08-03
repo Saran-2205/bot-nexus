@@ -64,7 +64,7 @@ const Navbar = () => {
         {/* LEFT: Logo */}
         <div className="flex items-center text-3xl hover:cursor-pointer hover:scale-105 transition-all duration-300">
           <img src="/nav-logo.png" alt="BotNexus Logo" width={60} height={50} />
-          <span className="text-[#ff2121]">Bot</span>
+          <span className="text-[#ff2121] mr-2">Bot</span>
           <span className="text-white hover:text-[#2196F3] duration-300">
             Nexus
           </span>

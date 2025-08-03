@@ -7,7 +7,7 @@ router.get('/', getAllBlogs);
 
 router.get('/:param', getBlogByParams);
 
-router.post('/create', createBlog);
+router.post('/add', createBlog);
 
 router.patch('/:param', updateBlog);
 

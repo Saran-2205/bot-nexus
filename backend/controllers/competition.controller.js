@@ -7,101 +7,57 @@ import { convertDriveLink } from "../lib/utils/convertDriveLink.js";
 // CREATE COMPETITION
 export const createCompetition = async (req, res) => {
   try {
+    // Destructure with defaults for optional fields
     const {
       title,
       category,
       place,
-      date,
+      date = new Date().toISOString(),
       venue,
-      heroImg,
+      heroImg="",
       gallery = [],
       shortDesc,
-      overview,
+      overview = "",
       stats = [],
       technicalSpecifications = [],
       keyTechnologies = [],
       teamMembers = [],
-      tags = [],
+      tags = []
     } = req.body;
 
+    // Validate required fields
     const errors = [];
+    if (!title) errors.push("Title is required");
+    if (!category) errors.push("Category is required");
+    if (!venue) errors.push("Venue is required");
+    if (!shortDesc) errors.push("Short description is required");
 
-    // ==== Validate required fields ====
-    if (!title || typeof title !== "string")
-      errors.push("Title is required and must be a string");
-    if (!category || typeof category !== "string")
-      errors.push("Category is required and must be a string");
-    if (!venue || typeof venue !== "string")
-      errors.push("Venue is required and must be a string");
-    if (!date || isNaN(new Date(date).getTime()))
-      errors.push("Date is required and must be a valid date string");
-    if (!heroImg || typeof heroImg !== "string")
-      errors.push("Hero image is required and must be a string");
+    // Validate date format if provided
+    if (date && isNaN(new Date(date).getTime())) {
+      errors.push("Invalid date format");
+    }
 
-    // ==== Validate teamMembers ====
-    if (!Array.isArray(teamMembers) || teamMembers.length === 0) {
-      errors.push("Team members must be a non-empty array.");
-    } else {
-      const validObjectIds = teamMembers.every((id) =>
+    // Validate teamMembers if provided
+    if (teamMembers.length > 0) {
+      const validObjectIds = teamMembers.every(id => 
         mongoose.Types.ObjectId.isValid(id)
       );
-      if (!validObjectIds) errors.push("All team member IDs must be valid ObjectIds");
-
-      const existingMembers = await Team.find({ _id: { $in: teamMembers } });
-      if (existingMembers.length !== teamMembers.length) {
-        errors.push("One or more team member IDs are invalid.");
-      }
-    }
-
-    // ==== Validate arrays ====
-    const validateKeyValueArray = (array, fieldName) => {
-      if (!Array.isArray(array)) {
-        errors.push(`${fieldName} must be an array`);
-        return;
-      }
-
-      array.forEach(({ key, value }, index) => {
-        if (typeof key !== "string" || typeof value !== "string") {
-          errors.push(`${fieldName}[${index}] must have string 'key' and 'value'`);
+      if (!validObjectIds) {
+        errors.push("All team member IDs must be valid ObjectIds");
+      } else {
+        const existingMembers = await Team.find({ _id: { $in: teamMembers } });
+        if (existingMembers.length !== teamMembers.length) {
+          errors.push("One or more team member IDs are invalid");
         }
-      });
-    };
-
-    const validateTechArray = (array) => {
-      if (!Array.isArray(array)) {
-        errors.push("keyTechnologies must be an array");
-        return;
       }
-      array.forEach(({ title }, i) => {
-        if (typeof title !== "string") {
-          errors.push(`keyTechnologies[${i}].title must be a string`);
-        }
-      });
-    };
-
-    validateKeyValueArray(stats, "stats");
-    validateKeyValueArray(technicalSpecifications, "technicalSpecifications");
-    validateTechArray(keyTechnologies);
-
-    if (
-      !Array.isArray(gallery) ||
-      gallery.some((link) => typeof link !== "string")
-    ) {
-      errors.push("Gallery must be an array of string URLs.");
     }
 
-    if (
-      !Array.isArray(tags) ||
-      tags.some((tag) => typeof tag !== "string")
-    ) {
-      errors.push("Tags must be an array of strings.");
-    }
-
+    // Return validation errors if any
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
 
-    // ==== Slug generation ====
+    // Generate unique slug
     const baseSlug = slugify(title, { lower: true, strict: true });
     let finalSlug = baseSlug;
     let counter = 1;
@@ -109,8 +65,8 @@ export const createCompetition = async (req, res) => {
       finalSlug = `${baseSlug}-${counter++}`;
     }
 
-    // ==== Create and save ====
-    const newCompetition = new Competition({
+    // Create competition with only the provided fields
+    const competitionData = {
       title,
       slug: finalSlug,
       category,
@@ -118,22 +74,31 @@ export const createCompetition = async (req, res) => {
       date: new Date(date),
       venue,
       heroImg: convertDriveLink(heroImg),
-      gallery: gallery.map(convertDriveLink),
       shortDesc,
       overview,
+      gallery: gallery.map(convertDriveLink),
       stats,
       technicalSpecifications,
       keyTechnologies,
       teamMembers,
-      tags,
+      tags
+    };
+
+    // Remove empty arrays
+    Object.keys(competitionData).forEach(key => {
+      if (Array.isArray(competitionData[key]) && competitionData[key].length === 0) {
+        delete competitionData[key];
+      }
     });
 
+    const newCompetition = new Competition(competitionData);
     await newCompetition.save();
 
     res.status(201).json({
       message: "Competition created successfully",
-      competition: newCompetition,
+      competition: newCompetition
     });
+
   } catch (error) {
     console.error("Error creating competition:", error);
     res.status(500).json({ error: "Internal server error" });

@@ -1,6 +1,7 @@
 // pages/HomePage.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -8,6 +9,58 @@ const Home = () => {
   const handleViewAllProjects = () => {
     navigate("/projects", { state: { fromHome: true } });
   };
+
+  const handleViewAllTeamMembers = () => {
+    navigate("/team", { state: { fromHome: true } });
+  };
+
+  const handleViewAllCompetitions = () => {
+    navigate("/competitions", { state: { fromHome: true } });
+  };
+
+  const handleViewAllBlogs = () => {
+    navigate("/blog", { state: { fromHome: true } });
+  };
+
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get("/api/projects/");
+        setProjects(response.data.projects);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const [latestProject, setLatestProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [lerror, setlError] = useState(null);
+
+  useEffect(() => {
+    const fetchLatestProject = async () => {
+      try {
+        const response = await axios.get("/api/projects/latest");
+        setLatestProject(response.data);
+      } catch (err) {
+        console.error("Error fetching latest project:", err);
+        setlError("Failed to load latest project");
+        // Optionally set a default project object here if needed
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchLatestProject();
+  }, []);
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -62,26 +115,44 @@ const Home = () => {
               >
                 Explore Projects
               </button>
-              <button className="bg-transparent border border-[#E53935] px-8 py-3 rounded font-medium font-['Orbitron'] text-[#E53935] hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 !rounded-button whitespace-nowrap cursor-pointer">
+              <button
+                onClick={handleViewAllTeamMembers}
+                className="bg-transparent border border-[#E53935] px-8 py-3 rounded font-medium font-['Orbitron'] text-[#E53935] hover:bg-black hover:text-white hover:scale-105 transition-all duration-300 !rounded-button whitespace-nowrap cursor-pointer"
+              >
                 Meet The Team
               </button>
             </div>
           </div>
           <div className="w-full md:w-1/2">
             <div className="relative">
-              <img
-                src="https://readdy.ai/api/search-image?query=futuristic%20robot%20with%20glowing%20cyan%20and%20purple%20details%2C%20high%20tech%20engineering%20masterpiece%2C%20dark%20background%20with%20subtle%20lighting%2C%20detailed%20mechanical%20parts%2C%20professional%20photography%2C%203D%20render%20with%20realistic%20textures%20and%20shadows&width=800&height=800&seq=hero-robot-1&orientation=squarish"
-                alt="Advanced Robotics"
-                className="w-full h-auto rounded-lg shadow-[0_0_30px_rgba(255,0,0,0.2)]"
-              />
-              <div className="absolute -bottom-4 -right-4 bg-[#0f0f1c]/80 backdrop-blur-md p-4 rounded-lg border border-[#E53935]/30">
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-[#E53935] animate-pulse"></div>
-                  <p className="font-['Orbitron'] text-sm text-[#E53935]">
-                    LATEST PROJECT: HEXAPOD v4.2
-                  </p>
+              {isLoading ? (
+                <div className="w-full h-96 bg-[#0f0f1c] rounded-lg animate-pulse"></div>
+              ) : lerror ? (
+                <div className="w-full h-96 bg-[#0f0f1c] rounded-lg flex items-center justify-center">
+                  <p className="text-[#E53935]">{lerror}</p>
                 </div>
-              </div>
+              ) : latestProject ? (
+                <>
+                  <img
+                    src={latestProject.img}
+                    alt={latestProject.title || "Latest Project"}
+                    className="w-full h-auto rounded-lg shadow-[0_0_30px_rgba(255,0,0,0.2)] object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute -bottom-4 -right-4 bg-[#0f0f1c]/90 backdrop-blur-md p-4 rounded-lg border border-[#E53935]/30">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 rounded-full bg-[#E53935] animate-pulse"></div>
+                      <p className="font-['Orbitron'] text-sm text-[#E53935]">
+                        LATEST PROJECT: {latestProject.title.toUpperCase()}
+                      </p>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="w-full h-96 bg-[#0f0f1c] rounded-lg flex items-center justify-center">
+                  <p className="text-[#E53935]">No projects found</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -104,7 +175,7 @@ const Home = () => {
                   <span className="text-[#E53935]">of Robotics</span>
                 </h2>
                 <p className="font-['Roboto'] text-gray-300 mb-6">
-                  BotNexus represents the convergence of creativity and
+                  Bot Nexus represents the convergence of creativity and
                   technical expertise at Anna University, Chennai. Founded by a
                   group of passionate engineering students, our team specializes
                   in designing and building cutting-edge robotics systems that
@@ -194,97 +265,58 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Hexapod Explorer",
-                category: "Autonomous Navigation",
-                description:
-                  "Six-legged robot designed for traversing uneven terrain with advanced obstacle avoidance.",
-                image:
-                  "https://readdy.ai/api/search-image?query=futuristic%20six-legged%20robot%20hexapod%20with%20glowing%20cyan%20details%2C%20dark%20background%20with%20subtle%20lighting%2C%20detailed%20mechanical%20legs%20and%20body%2C%20professional%20photography%20with%20dramatic%20lighting%2C%20high-tech%20robotic%20design%20with%20sleek%20finish&width=600&height=400&seq=project-1&orientation=landscape",
-              },
-              {
-                title: "AquaBot Submarine",
-                category: "Underwater Robotics",
-                description:
-                  "Autonomous underwater vehicle for marine exploration and data collection.",
-                image:
-                  "https://readdy.ai/api/search-image?query=futuristic%20underwater%20robot%20submarine%20with%20glowing%20purple%20and%20cyan%20details%2C%20dark%20ocean%20background%2C%20sleek%20aerodynamic%20design%2C%20professional%20underwater%20photography%2C%20high-tech%20marine%20exploration%20vehicle%20with%20advanced%20sensors%20and%20cameras&width=600&height=400&seq=project-2&orientation=landscape",
-              },
-              {
-                title: "Precision Robotic Arm",
-                category: "Industrial Automation",
-                description:
-                  "High-precision robotic arm with 6 degrees of freedom for manufacturing applications.",
-                image:
-                  "https://readdy.ai/api/search-image?query=advanced%20robotic%20arm%20with%20multiple%20joints%20and%20precision%20grippers%2C%20glowing%20cyan%20and%20purple%20details%2C%20dark%20background%20with%20dramatic%20lighting%2C%20industrial%20design%20with%20sleek%20metallic%20finish%2C%20professional%20photography%20of%20high-tech%20manufacturing%20equipment&width=600&height=400&seq=project-3&orientation=landscape",
-              },
-              {
-                title: "Drone Swarm System",
-                category: "Aerial Robotics",
-                description:
-                  "Coordinated multi-drone system for complex aerial maneuvers and mapping.",
-                image:
-                  "https://readdy.ai/api/search-image?query=multiple%20futuristic%20drones%20flying%20in%20formation%20with%20glowing%20cyan%20and%20purple%20lights%2C%20dark%20night%20sky%20background%2C%20advanced%20aerial%20robots%20with%20sleek%20design%2C%20professional%20photography%20capturing%20high-tech%20flying%20machines%20in%20synchronized%20movement&width=600&height=400&seq=project-4&orientation=landscape",
-              },
-              {
-                title: "Medical Assistant Bot",
-                category: "Healthcare Robotics",
-                description:
-                  "Assistive robot designed to help medical professionals with routine tasks.",
-                image:
-                  "https://readdy.ai/api/search-image?query=sleek%20medical%20robot%20assistant%20in%20hospital%20setting%2C%20glowing%20cyan%20and%20purple%20interface%20details%2C%20clean%20white%20and%20dark%20contrasting%20design%2C%20professional%20photography%20of%20healthcare%20technology%2C%20advanced%20robotic%20helper%20with%20medical%20equipment%20attachments&width=600&height=400&seq=project-5&orientation=landscape",
-              },
-              {
-                title: "Solar Tracking System",
-                category: "Renewable Energy",
-                description:
-                  "Automated solar panel array that optimizes energy collection throughout the day.",
-                image:
-                  "https://readdy.ai/api/search-image?query=futuristic%20solar%20panel%20array%20with%20robotic%20tracking%20system%2C%20glowing%20cyan%20details%20on%20mechanical%20parts%2C%20dark%20environment%20with%20solar%20panels%20capturing%20light%2C%20professional%20photography%20of%20renewable%20energy%20technology%2C%20advanced%20positioning%20system%20with%20sleek%20design&width=600&height=400&seq=project-6&orientation=landscape",
-              },
-            ]
-              .slice(0, 3)
-              .map((project, index) => (
-                <div
-                  key={index}
-                  className="bg-[#0d0d1a]/70 border text-[#E53935] hover:text-[#2196F3] border-[#E53935]/50 rounded-2xl backdrop-blur-xl overflow-hidden group hover:border-[#2196F3]/10 hover:shadow-[0_0_30px_rgba(0,110,210,1)] hover:cursor-pointer transition-all duration-300"
-                >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={`Image of ${project.title}`}
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] to-transparent opacity-80"></div>
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-[#E53935] text-black text-xs font-semibold px-3 py-1 rounded-full">
-                        {project.category}
-                      </span>
+          {loading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E53935]"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center text-red-500 py-10">
+              Error loading projects: {error.message}
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.slice(0, 3).map((project, index) => (
+                  <div
+                    key={project._id || index}
+                    className="bg-[#0d0d1a]/70 border text-[#E53935] hover:text-[#2196F3] border-[#E53935]/50 rounded-2xl backdrop-blur-xl overflow-hidden group hover:border-[#2196F3]/10 hover:shadow-[0_0_30px_rgba(0,110,210,1)] hover:cursor-pointer transition-all duration-300"
+                  >
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={project.img}
+                        alt={`Image of ${project.title}`}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d1a] to-transparent opacity-80"></div>
+                      <div className="absolute top-4 left-4">
+                        <span className="bg-[#E53935] text-black text-xs font-semibold px-3 py-1 rounded-full">
+                          {project.category}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-5 ">
-                    <h3 className="text-xl font-bold font-['Orbitron'] transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-300 font-['Roboto'] text-sm mt-2 line-clamp-3">
-                      {project.description}
-                    </p>
-                    <div className="mt-4 flex justify-between items-center">
-                      <button className="hover:scale-110 font-medium text-sm transition-colors duration-300">
-                        View Details <i className="fas fa-arrow-right ml-2"></i>
-                      </button>
-                      <div className="w-8 h-8 rounded-full border   bg-[#0d0d1a] flex items-center justify-center hover:bg-[#2196F3]/20 transition-all duration-300">
-                        <i className="fas fa-code text-sm"></i>
+                    <div className="p-5 ">
+                      <h3 className="text-xl font-bold font-['Orbitron'] transition-colors duration-300">
+                        {project.title}
+                      </h3>
+                      <p className="text-gray-300 font-['Roboto'] text-sm mt-2 line-clamp-3">
+                        {project.shortDesc}
+                      </p>
+                      <div className="mt-4 flex justify-between items-center">
+                        <button className="hover:scale-110 font-medium text-sm transition-colors duration-300">
+                          View Details{" "}
+                          <i className="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <div className="w-8 h-8 rounded-full border   bg-[#0d0d1a] flex items-center justify-center hover:bg-[#2196F3]/20 transition-all duration-300">
+                          <i className="fas fa-code text-sm"></i>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-          </div>
-
+                ))}
+              </div>
+            </>
+          )}
           <div className="text-center mt-12">
             <button
               onClick={handleViewAllProjects}
@@ -409,7 +441,10 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-6">
-            <button className="bg-[#E53935] text-black font-['Orbitron'] text-md font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer">
+            <button
+              onClick={handleViewAllCompetitions}
+              className="bg-[#E53935] text-black font-['Orbitron'] text-md font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer"
+            >
               View All Competitions{" "}
               <i className="fas fa-chevron-right ml-2 text-sm"></i>
             </button>
@@ -514,7 +549,10 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <button className="bg-[#E53935] text-black font-['Orbitron'] text-md font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer">
+            <button
+              onClick={handleViewAllTeamMembers}
+              className="bg-[#E53935] text-black font-['Orbitron'] text-md font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer"
+            >
               Meet The Full Team{" "}
               <i className="fas fa-chevron-right ml-2 text-sm"></i>
             </button>
@@ -620,7 +658,10 @@ const Home = () => {
           </div>
 
           <div className="text-center mt-12">
-            <button className="bg-[#E53935] text-black font-['Orbitron'] text-md font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer">
+            <button
+              onClick={handleViewAllBlogs}
+              className="bg-[#E53935] text-black font-['Orbitron'] text-md font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer"
+            >
               View All Blogs{" "}
               <i className="fas fa-chevron-right ml-2 text-sm"></i>
             </button>

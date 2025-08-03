@@ -9,10 +9,10 @@ const CreateProjectPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate: createMutation } = useMutation({
+  const { mutate: createMutation, isLoading } = useMutation({
     mutationFn: async (formData) => {
       try {
-        const res = await axios.post("/api/admin/projects/create", formData, {
+        const res = await axios.post("/api/admin/projects/add", formData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -27,7 +27,7 @@ const CreateProjectPage = () => {
     },
 
     onSuccess: (data) => {
-      toast.success(data.message || "Project created successfully");
+      toast.success(data.message || "Project added successfully");
       queryClient.invalidateQueries(["projects"]);
       navigate("/nexus-hq/projects");
     },
@@ -42,9 +42,20 @@ const CreateProjectPage = () => {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-[#E93535]">Create New Project</h1>
-      <ProjectForm onSubmit={handleCreateProject} />
+    <div className="p-6 max-w-5xl mx-auto">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-[#E93535] mb-2">Add New Project</h1>
+        <p className="text-gray-600">Fill out the form below to add a new project</p>
+      </div>
+      
+      <div className="rounded-lg shadow-md">
+        <ProjectForm 
+          onSubmit={handleCreateProject} 
+          isSubmitting={isLoading} 
+        />
+      </div>
+      
+      
     </div>
   );
 };

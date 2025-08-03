@@ -901,7 +901,7 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
         >
           {initialData && Object.keys(initialData).length > 0
             ? "Update Project"
-            : "Create Project"}
+            : "Add Project"}
         </button>
       </div>
     </form>
