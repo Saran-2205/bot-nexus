@@ -41,6 +41,25 @@ const Home = () => {
     fetchProjects();
   }, []);
 
+  const [competitions, setCompetitions] = useState([]);
+  const [cloading, setCLoading] = useState(true);
+  const [cerror, setCError] = useState(null);
+
+  useEffect(() => {
+    const fetchCompetitions = async () => {
+      try {
+        const response = await axios.get("/api/competitions/");
+        setCompetitions(response.data.competitions);
+      } catch (err) {
+        setCError(err);
+      } finally {
+        setCLoading(false);
+      }
+    };
+
+    fetchCompetitions();
+  }, []);
+
   const [latestProject, setLatestProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lerror, setlError] = useState(null);
@@ -82,6 +101,11 @@ const Home = () => {
       });
     };
   }, []);
+
+  const formatMonthYear = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  };
 
   return (
     <div className="home-page">
@@ -343,68 +367,33 @@ const Home = () => {
               innovative solutions.
             </p>
           </div>
-
-          <div className="relative">
-            <div className="overflow-x-auto py-8">
-              <div className="flex space-x-6 min-w-max px-4">
-                {[
-                  {
-                    name: "RoboWars 2025",
-                    date: "March 2025",
-                    position: "1st Place",
-                    category: "Combat Robotics",
-                    image:
-                      "https://readdy.ai/api/search-image?query=futuristic%20robot%20battle%20arena%20with%20glowing%20cyan%20and%20purple%20lighting%2C%20dark%20environment%20with%20dramatic%20spotlights%2C%20advanced%20combat%20robots%20with%20mechanical%20details%2C%20professional%20event%20photography%20with%20audience%20silhouettes%2C%20high-tech%20competition%20stage&width=500&height=300&seq=comp-1&orientation=landscape",
-                  },
-                  {
-                    name: "TechFest Autonomous Challenge",
-                    date: "January 2025",
-                    position: "2nd Place",
-                    category: "Autonomous Navigation",
-                    image:
-                      "https://readdy.ai/api/search-image?query=autonomous%20robot%20competition%20with%20obstacle%20course%2C%20glowing%20cyan%20and%20purple%20track%20markers%2C%20dark%20environment%20with%20focused%20lighting%20on%20robots%2C%20professional%20event%20photography%20of%20technical%20challenge%2C%20advanced%20robots%20navigating%20complex%20terrain&width=500&height=300&seq=comp-2&orientation=landscape",
-                  },
-                  {
-                    name: "International Robotics Olympiad",
-                    date: "November 2024",
-                    position: "Gold Medal",
-                    category: "Multi-domain Challenge",
-                    image:
-                      "https://readdy.ai/api/search-image?query=international%20robotics%20competition%20with%20multiple%20teams%20and%20robots%2C%20large%20arena%20with%20glowing%20cyan%20and%20purple%20lighting%20elements%2C%20dark%20environment%20with%20spotlights%20on%20competition%20floor%2C%20professional%20event%20photography%20of%20global%20robotics%20challenge%2C%20advanced%20robots%20performing%20complex%20tasks&width=500&height=300&seq=comp-3&orientation=landscape",
-                  },
-                  {
-                    name: "Underwater Robotics Challenge",
-                    date: "September 2024",
-                    position: "1st Place",
-                    category: "Marine Robotics",
-                    image:
-                      "https://readdy.ai/api/search-image?query=underwater%20robotics%20competition%20in%20large%20pool%2C%20robots%20with%20glowing%20cyan%20and%20purple%20lights%20underwater%2C%20dark%20environment%20with%20blue%20lighting%2C%20professional%20event%20photography%20of%20marine%20robotics%20challenge%2C%20advanced%20underwater%20vehicles%20performing%20precision%20tasks&width=500&height=300&seq=comp-4&orientation=landscape",
-                  },
-                  {
-                    name: "Drone Racing League",
-                    date: "July 2024",
-                    position: "3rd Place",
-                    category: "Aerial Robotics",
-                    image:
-                      "https://readdy.ai/api/search-image?query=drone%20racing%20competition%20with%20glowing%20cyan%20and%20purple%20LED%20course%20markers%2C%20dark%20arena%20with%20neon%20lighting%20tracks%2C%20professional%20event%20photography%20of%20high-speed%20aerial%20robots%2C%20advanced%20racing%20drones%20navigating%20through%20illuminated%20obstacles&width=500&height=300&seq=comp-5&orientation=landscape",
-                  },
-                ]
-                  .slice(0, 4)
-                  .map((competition, index) => (
+          {cloading ? (
+            <div className="flex justify-center items-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#E53935]"></div>
+            </div>
+          ) : cerror ? (
+            <div className="text-center text-red-500 py-10">
+              Error loading projects: {cerror.message}
+            </div>
+          ) : (
+            <div className="relative">
+              <div className="overflow-x-auto py-8">
+                <div className="flex space-x-6 min-w-max px-4">
+                  {competitions.slice(0, 4).map((competition, index) => (
                     <div
-                      key={index}
+                      key={competition._id || index}
                       className="backdrop-blur-md bg-[#1a1a2e]/50 border border-[#E53935]/50 rounded-xl w-85 group flex-shrink-0 transition-all duration-300 hover:border-[#2196F3]/20 hover:shadow-[0_0_25px_rgba(0,110,210,1)] cursor-pointer"
                     >
                       <div className="relative overflow-hidden rounded-xl">
                         <img
-                          src={competition.image}
-                          alt={competition.name}
+                          src={competition.heroImg}
+                          alt={competition.title}
                           className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f1c] to-transparent opacity-70"></div>
                         <div className="absolute top-4 left-4">
                           <span className="bg-[#E53935] backdrop-blur-sm text-xs font-['Roboto'] px-3 py-1 rounded-full text-black font-medium group-hover:bg-[#2196F3] transition-transform duration-500">
-                            {competition.date}
+                            {formatMonthYear(competition.date)}
                           </span>
                         </div>
                         <div className="absolute bottom-4 right-4">
@@ -416,11 +405,11 @@ const Home = () => {
                       <div className="p-6">
                         <div className="flex items-start justify-between mb-3">
                           <h3 className="font-['Orbitron'] text-lg font-bold text-white transition-colors duration-300 pr-2">
-                            {competition.name}
+                            {competition.title}
                           </h3>
                           <div className="flex-shrink-0 bg-[#1a1a2e] border border-[#E53935]/30 rounded-full px-3 py-1 group-hover:bg-[#2196F3]/30 group-hover:border-[#2196F3]/30 transition-transform duration-300">
                             <span className="font-['Orbitron'] text-xs text-[#E53935] group-hover:text-[#2196F3]">
-                              {competition.position}
+                              {competition.place}
                             </span>
                           </div>
                         </div>
@@ -436,9 +425,10 @@ const Home = () => {
                       </div>
                     </div>
                   ))}
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           <div className="text-center mt-6">
             <button
