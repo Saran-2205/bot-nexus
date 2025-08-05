@@ -1,0 +1,25 @@
+/* App.css - Global styles */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono&display=swap');
+
+:root {
+  /* Colors - Updated to match Bot Nexus Team logo */
+  --primary: #E53935;          /* Bot Nexus Red */
+  --primary-light: #FF6B6B;    /* Lighter red for hover states */
+  --secondary: #2196F3;        /* Bot Nexus Blue accent */
+  --accent: #78909C;           /* Silver/metallic accent */
+  --bg-primary: #121212;       /* Darker background */
+  --bg-secondary: #1E1E1E;     /* Slightly lighter background */
+  --text-primary: #FFFFFF;     /* White text */
+  --text-secondary: #EEEEEE;   /* Light gray text */
+  --text-body: #E2E8F0;        /* Body text */
+  --text-muted: #9E9E9E;       /* Muted text */
+  --status-complete: #43A047;  /* Green */
+  --status-inprogress: #FB8C00;/* Orange */
+  --status-testing: #1E88E5;   /* Blue */
+  --status-alert: #E53935;     /* Red */
+
+  /* Typography */
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}

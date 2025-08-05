@@ -1,0 +1,115 @@
+# Node modules
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables
+.env
+.env.*.local
+*.env.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Build output
+/build
+/dist
+/public/build
+/public/dist
+
+# React-specific
+*.cache
+.cache/
+.vite/
+.next/
+out/
+
+# Coverage reports
+coverage/
+*.lcov
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw?
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Dependency directories
+bower_components/
+
+# Optional npm cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Debug files
+*.pid
+*.seed
+
+# Test files
+*.test.js
+*.spec.js
+*.test.ts
+*.spec.ts
+test-output/
+
+# Local development data
+*.sqlite
+*.sqlite3
+*.db
+dump.rdb
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.old
+
+# Build artifacts
+*.tgz
+*.tar.gz
+
+# TypeScript
+*.tsbuildinfo
+
+# PM2 logs
+pids
+*.pid
+*.log
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Local MongoDB data
+/data/db
+
+# Optional: Ignore compiled JS if you have TS source
+build/
+lib/
+
+# Netlify/Vercel
+.netlify/
+.vercel/
+
+# Socket.IO history/cache
+*.history
+
+# SASS/SCSS cache
+.sass-cache
+
+# Firebase
+.firebase/
+
+# Misc
+*.orig
