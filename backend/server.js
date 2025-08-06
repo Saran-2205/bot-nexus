@@ -47,6 +47,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/competitions", competitionRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 connectMongoDB().then(() => {
   app.listen(PORT, () => {

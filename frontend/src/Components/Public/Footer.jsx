@@ -1,6 +1,37 @@
-
+import { useState } from "react";
 
 const Footer = () => {
+
+  const [formData, setFormData] = useState({ name: '', email: '', overview: '' });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        alert('Message sent successfully!');
+        setFormData({ name: '', email: '', overview: '' });
+      } else {
+        alert('Something went wrong.');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error sending message.');
+    }};
+
+
   return (
     <footer className="bg-[#0f0f1c] pt-20 pb-8">
       <div className="mx-25">
@@ -93,7 +124,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <form onSubmit={handleSubmit}>
             <h4 className="font-['Orbitron'] text-lg font-bold mb-3 text-[#E53935]">
               Feedbacks and Queries
             </h4>
@@ -112,6 +143,8 @@ const Footer = () => {
                   className="w-full bg-[#1a1a2e] border border-[#E53935]/30 rounded-lg py-3 px-4 font-['Roboto'] text-white focus:outline-none focus:border-[#2196F3] transition-all duration-300"
                   required
                   placeholder="Your Name"
+                  value={formData.name}
+                  onChange={handleChange}
                 />
               </div>
               <h4 className="font-['Orbitron'] text-md font-bold text-[#E53935]">
@@ -123,6 +156,9 @@ const Footer = () => {
                   name="email"
                   className="w-full bg-[#1a1a2e] border border-[#E53935]/30 rounded-lg py-3 px-4 font-['Roboto'] text-white focus:outline-none focus:border-[#2196F3] transition-all duration-300"
                   placeholder="Your Email Address"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <h4 className="font-['Orbitron'] text-md font-bold text-[#E53935]">
@@ -134,13 +170,16 @@ const Footer = () => {
                   className="w-full bg-[#1a1a2e] border border-[#E53935]/30 rounded-lg py-3 px-4 font-['Roboto'] text-white focus:outline-none focus:border-[#2196F3] transition-all duration-300"
                   rows={2}
                   placeholder="Type Your Message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                 />
               </div>
               <button className="bg-[#E53935] font-['Orbitron'] px-4 py-2 rounded text-black hover:text-white text-md font-semibold hover:bg-[#2196F3] cursor-pointer transition-all duration-300 hover:shadow-[0_0_2.5px_rgba(0,255,255,0.5)]">
                 Submit
               </button>
             </div>
-          </div>
+          </form>
         </div>
 
         <div className="border-t border-[#E53935]/20 pt-8">
