@@ -73,18 +73,6 @@ app.use("/api/team", teamRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/achievements", achievementRoutes);
 
-// Static frontend build (explicit + root)
-console.log("Serving static from:", distPath);
-app.use(express.static(distPath));
-app.use("/assets", express.static(path.join(distPath, "assets"))); // explicit hashed assets
-
-// SPA fallback (only for non-file, non-API)
-app.get("*", (req, res, next) => {
-  if (req.path.startsWith("/api")) return next();
-  if (/\.[^/]+$/.test(req.path)) return next(); // has an extension -> treat as file
-  res.sendFile(path.join(distPath, "index.html"));
-});
-
 // Start server after DB connects
 connectMongoDB().then(() => {
   app.listen(PORT, () => {
