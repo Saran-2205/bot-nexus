@@ -51,7 +51,7 @@ const Home = () => {
     data: blogData
   } = useQuery({
     queryKey: ["blog"],
-    queryFn: () => fetchData("blog").then((data) => data.blog),
+    queryFn: () => fetchData("blog").then((data) => data.blog || []),
   });
 
   // 4. Latest Project Query
