@@ -36,8 +36,10 @@ const Competition = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const API = import.meta.env.VITE_API_URL;
+
   const fetchProjects = async () => {
-    const res = await axios.get("/api/competitions");
+    const res = await axios.get(`${API}/api/competitions`);
     return res.data.competitions;
   };
 

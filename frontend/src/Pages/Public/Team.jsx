@@ -6,10 +6,12 @@ const Team = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await fetch("/api/team");
+        const response = await fetch(`${API}/api/team`);
         if (!response.ok) {
           throw new Error("Failed to fetch team members");
         }
@@ -23,7 +25,7 @@ const Team = () => {
     };
 
     fetchTeamMembers();
-  }, []);
+  }, [API]);
 
   // Group team members by role
   const teamLeads = teamMembers.filter(

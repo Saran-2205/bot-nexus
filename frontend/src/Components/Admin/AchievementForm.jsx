@@ -9,6 +9,8 @@ export default function AchievementForm() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const API = import.meta.env.VITE_API_URL;
+
   const [formData, setFormData] = useState({
     title: "",
     year: "",
@@ -21,7 +23,7 @@ export default function AchievementForm() {
     queryKey: ["achievement", id],
     queryFn: async () => {
       if (!id) return null;
-      const res = await axios.get(`/api/admin/achievements/${id}`);
+      const res = await axios.get(`${API}/api/admin/achievements/${id}`);
       return res.data;
     },
     enabled: !!id,
@@ -34,9 +36,9 @@ export default function AchievementForm() {
   const mutation = useMutation({
     mutationFn: async (formData) => {
       if (id) {
-        return axios.patch(`/api/admin/achievements/${id}`, formData);
+        return axios.patch(`${API}/api/admin/achievements/${id}`, formData);
       } else {
-        return axios.post("/api/admin/achievements/", formData);
+        return axios.post(`${API}/api/admin/achievements/`, formData);
       }
     },
     onSuccess: () => {

@@ -10,8 +10,10 @@ const Feedback = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("newest");
 
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    fetch("/api/admin/feedback")
+    fetch(`${API}/api/admin/feedback`)
       .then((res) => res.json())
       .then((data) => {
         setFeedbacks(data.feedbacks);
@@ -21,7 +23,7 @@ const Feedback = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [API]);
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this feedback?")) return;

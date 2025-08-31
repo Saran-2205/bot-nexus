@@ -67,10 +67,12 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
     }
   }, [initialData]);
 
+  const API = import.meta.env.VITE_API_URL;
+
   // Add this function to fetch team members (call it in useEffect if needed)
   const fetchTeamMembers = async (searchTerm = "") => {
     try {
-      const response = await axios.get(`/api/admin/team?search=${searchTerm}`);
+      const response = await axios.get(`${API}/api/admin/team?search=${searchTerm}`);
       const members = response?.data?.teamMembers || [];
       setTeamMemberSuggestions(Array.isArray(members) ? members : []);
     } catch (error) {
@@ -88,7 +90,7 @@ const ProjectForm = ({ onSubmit, initialData = {} }) => {
 
     if (value.length > 1) {
       try {
-        const response = await axios.get(`/api/admin/team?search=${value}`);
+        const response = await axios.get(`${API}/api/admin/team?search=${value}`);
         const filteredMembers =
           response.data?.teamMembers?.filter(
             (member) => !formData.team.includes(member._id) // Exclude already selected members

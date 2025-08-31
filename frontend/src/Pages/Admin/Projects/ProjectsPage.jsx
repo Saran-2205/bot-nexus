@@ -3,15 +3,17 @@ import AdminCard from "../../../Components/Admin/AdminCard.jsx";
 import ConfirmModal from "../../../Components/ConfirmModal.jsx";
 import { useAdminList } from "../../../hooks/useAdminList.js";
 
+const API = import.meta.env.VITE_API_URL;
+
 const fetchProjects = async () => {
-  const res = await fetch("/api/admin/projects/");
+  const res = await fetch(`${API}/api/admin/projects/`);
   if (!res.ok) throw new Error("Failed to fetch projects");
   const data = await res.json();
   return data.projects;
 };
 
 const deleteProject = async (id) => {
-  const res = await fetch(`/api/admin/projects/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API}/api/admin/projects/${id}`, { method: "DELETE" });
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to delete");

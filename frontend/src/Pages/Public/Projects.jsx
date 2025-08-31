@@ -24,9 +24,11 @@ const Project = () => {
   const filters = ["All", "Ongoing", "Completed", "Upcoming"];
   const sortOptions = ["Latest", "Oldest", "Priority"];
 
+  const API = import.meta.env.VITE_API_URL;
+
   // Data fetching (matches homepage pattern)
   const fetchProjects = async () => {
-    const res = await axios.get("/api/projects");
+    const res = await axios.get(`${API}/api/projects`);
     return res.data.projects;
   };
 

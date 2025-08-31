@@ -3,15 +3,17 @@ import AdminCard from "../../../Components/Admin/AdminCard.jsx";
 import ConfirmModal from "../../../Components/ConfirmModal.jsx";
 import { useAdminList } from "../../../hooks/useAdminList.js";
 
+const API = import.meta.env.VITE_API_URL;
+
 const fetchTeamMembers = async () => {
-  const res = await fetch("/api/admin/team/");
+  const res = await fetch(`${API}/api/admin/team/`);
   if (!res.ok) throw new Error("Failed to fetch team members");
   const data = await res.json();
   return data.teamMembers;
 };
 
 const deleteTeamMember = async (id) => {
-  const res = await fetch(`/api/admin/team/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API}/api/admin/team/${id}`, { method: "DELETE" });
   if (!res.ok) {
     const err = await res.json();
     throw new Error(err.message || "Failed to delete");

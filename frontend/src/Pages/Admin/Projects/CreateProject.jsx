@@ -10,10 +10,12 @@ const CreateProjectPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const API = import.meta.env.VITE_API_URL;
+
   const { mutate: createMutation, isLoading } = useMutation({
     mutationFn: async (formData) => {
       try {
-        const res = await axios.post("/api/admin/projects/add", formData, {
+        const res = await axios.post(`${API}/api/admin/projects/add`, formData, {
           headers: {
             "Content-Type": "application/json",
           },

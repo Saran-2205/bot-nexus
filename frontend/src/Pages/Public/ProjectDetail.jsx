@@ -52,10 +52,12 @@ const ProjectDetail = () => {
     setTimeout(() => setIsScrolling(false), 300);
   };
 
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`/api/projects/${param}`);
+        const response = await axios.get(`${API}/api/projects/${param}`);
         if (!response.data?.project) {
           throw new Error("Project data not found");
         }
@@ -70,7 +72,7 @@ const ProjectDetail = () => {
     };
 
     fetchProject();
-  }, [param]);
+  }, [param,API]);
 
   if (loading) {
     return (

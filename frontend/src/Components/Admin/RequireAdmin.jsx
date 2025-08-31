@@ -2,8 +2,10 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../LoadingSpinner";
 
+const API = import.meta.env.VITE_API_URL;
+
 const fetchCurrentAdmin = async () => {
-  const res = await fetch("/api/admin/auth/me", { credentials: "include" });
+  const res = await fetch(`${API}/api/admin/auth/me`, { credentials: "include" });
   if (!res.ok) throw new Error("Not authenticated");
   return res.json();
 };

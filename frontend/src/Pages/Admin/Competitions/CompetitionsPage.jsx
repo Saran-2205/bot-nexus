@@ -3,15 +3,17 @@ import AdminCard from "../../../Components/Admin/AdminCard.jsx";
 import ConfirmModal from "../../../Components/ConfirmModal.jsx";
 import { useAdminList } from "../../../hooks/useAdminList.js";
 
+const API = import.meta.env.VITE_API_URL;
+
 const fetchCompetitions = async () => {
-  const res = await fetch("/api/admin/competitions/");
+  const res = await fetch(`${API}/api/admin/competitions/`);
   if (!res.ok) throw new Error("Failed to fetch competitions");
   const data = await res.json();
   return data.competitions;
 };
 
 const deleteCompetition = async (id) => {
-  const res = await fetch(`/api/admin/competitions/${id}`, {
+  const res = await fetch(`${API}/api/admin/competitions/${id}`, {
     method: "DELETE",
   });
   if (!res.ok) {

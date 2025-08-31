@@ -9,6 +9,7 @@ import { FiArrowLeft } from "react-icons/fi";
 const EditProject = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
   const {
     data: projectData,
     isLoading,
@@ -17,12 +18,12 @@ const EditProject = () => {
   } = useQuery({
     queryKey: ["project", slug],
     queryFn: () =>
-      axios.get(`/api/admin/projects/${slug}`).then((res) => res.data.project),
+      axios.get(`${API}/api/admin/projects/${slug}`).then((res) => res.data.project),
     enabled: !!slug,
   });
 
   const handleSubmit = async (formData) => {
-    const updatePromise = axios.patch(`/api/admin/projects/${slug}`, formData);
+    const updatePromise = axios.patch(`${API}/api/admin/projects/${slug}`, formData);
     toast.promise(updatePromise, {
       loading: "Updating project...",
       success: "Project updated successfully!",

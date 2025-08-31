@@ -9,6 +9,9 @@ import LoadingSpinner from "../../../Components/LoadingSpinner.jsx";
 const EditCompetition = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+
+  const API = import.meta.env.VITE_API_URL;
+
   const {
     data: competitionData,
     isLoading,
@@ -18,14 +21,14 @@ const EditCompetition = () => {
     queryKey: ["competition", slug],
     queryFn: () =>
       axios
-        .get(`/api/admin/competitions/${slug}`)
+        .get(`${API}/api/admin/competitions/${slug}`)
         .then((res) => res.data.competition),
     enabled: !!slug,
   });
 
   const handleSubmit = async (formData) => {
     const updatePromise = axios.patch(
-      `/api/admin/competitions/${slug}`,
+      `${API}/api/admin/competitions/${slug}`,
       formData
     );
     toast.promise(updatePromise, {

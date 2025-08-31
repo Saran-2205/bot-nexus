@@ -25,9 +25,11 @@ const AdminLayout = () => {
     setActivePath(window.location.pathname);
   }, []);
 
+  const API = import.meta.env.VITE_API_URL;
+
   const handleLogout = async () => {
     try {
-      await fetch("/api/admin/auth/logout", {
+      await fetch(`${API}/api/admin/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

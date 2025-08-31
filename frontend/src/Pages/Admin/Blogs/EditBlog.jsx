@@ -9,6 +9,7 @@ import LoadingSpinner from "../../../Components/LoadingSpinner.jsx";
 const EditBlog = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
   const {
     data: blogData,
     isLoading,
@@ -17,16 +18,16 @@ const EditBlog = () => {
   } = useQuery({
     queryKey: ["blog", slug],
     queryFn: () =>
-      axios.get(`/api/admin/blog/${slug}`).then((res) => res.data.blog),
+      axios.get(`${API}/api/admin/blog/${slug}`).then((res) => res.data.blog),
     enabled: !!slug,
   });
 
   const handleSubmit = async (formData) => {
-    const updatePromise = axios.patch(`/api/admin/blog/${slug}`, formData);
+    const updatePromise = axios.patch(`${API}/api/admin/blog/${slug}`, formData);
     toast.promise(updatePromise, {
-      loading: "Updating competition...",
-      success: "competition updated successfully!",
-      error: "Failed to update competition",
+      loading: "Updating blog...",
+      success: "Blog updated successfully!",
+      error: "Failed to update blog",
     });
 
     try {

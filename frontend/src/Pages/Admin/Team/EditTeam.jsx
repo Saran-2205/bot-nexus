@@ -9,6 +9,7 @@ import LoadingSpinner from "../../../Components/LoadingSpinner.jsx";
 const EditTeam = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const API = import.meta.env.VITE_API_URL;
   const {
     data: teamData,
     isLoading,
@@ -17,12 +18,12 @@ const EditTeam = () => {
   } = useQuery({
     queryKey: ["team", slug],
     queryFn: () =>
-      axios.get(`/api/admin/team/${slug}`).then((res) => res.data.teamMember),
+      axios.get(`${API}/api/admin/team/${slug}`).then((res) => res.data.teamMember),
     enabled: !!slug,
   });
 
   const handleSubmit = async (formData) => {
-    const updatePromise = axios.patch(`/api/admin/team/${slug}`, formData);
+    const updatePromise = axios.patch(`${API}/api/admin/team/${slug}`, formData);
     toast.promise(updatePromise, {
       loading: "Updating team member...",
       success: "Team Member updated successfully!",

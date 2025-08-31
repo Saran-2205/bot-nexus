@@ -10,6 +10,8 @@ const LoginPage = () => {
     password: "",
   });
 
+  const API = import.meta.env.VITE_API_URL;
+
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -22,7 +24,7 @@ const LoginPage = () => {
     mutationFn: async ({ username, password }) => {
       try {
         const res = await axios.post(
-          "/api/admin/auth/login",
+          `${API}/api/admin/auth/login`,
           { username, password },
           { withCredentials: true }
         );

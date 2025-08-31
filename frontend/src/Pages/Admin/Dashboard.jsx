@@ -8,11 +8,13 @@ import { motion } from "framer-motion";
 
 const Dashboard = () => {
 
+  const API = import.meta.env.VITE_API_URL;
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: async () => {
       try {
-        const res = await axios.get("/api/admin/dashboard/get");
+        const res = await axios.get(`${API}/api/admin/dashboard/get`);
         if (res.status !== 200) {
           throw new Error(
             res.data.message || "Failed to fetch dashboard stats"

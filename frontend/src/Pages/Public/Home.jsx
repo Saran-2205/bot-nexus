@@ -11,8 +11,10 @@ const Home = () => {
     navigate(path, { state: { fromHome: true } });
   };
 
+  const API = import.meta.env.VITE_API_URL;
+
   const fetchData = async (endpoint) => {
-    const res = await axios.get(`/api/${endpoint}`);
+    const res = await axios.get(`${API}/api/${endpoint}`);
     return res.data; // Return entire response data
   };
 

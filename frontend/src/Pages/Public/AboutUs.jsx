@@ -6,15 +6,17 @@ import { FaUserTie, FaUserGraduate, FaRobot, FaTools, FaRocket, FaAward, FaHands
 const AboutUs = () => {
   const [teamMembers, setTeamMembers] = useState([]);
 
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchTeamMembers = async () => {
-      const response = await fetch("/api/team");
+      const response = await fetch(`${API}/api/team`);
       const data = await response.json();
       setTeamMembers(data.teamMembers);
     };
 
     fetchTeamMembers();
-  }, []);
+  }, [API]);
 
   const faculty = teamMembers.filter(member => member.designation.toLowerCase().includes('professor') );
 
@@ -23,7 +25,7 @@ const AboutUs = () => {
   } = useQuery({
     queryKey: ["achievements"],
     queryFn: async () => {
-      const res = await axios.get("/api/admin/achievements");
+      const res = await axios.get(`${API}/api/admin/achievements`);
       return res.data;
     }
   });

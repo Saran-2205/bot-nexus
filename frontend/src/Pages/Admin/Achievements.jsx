@@ -11,10 +11,12 @@ export default function Achievements() {
   const [sortBy, setSortBy] = useState("newest");
   const [deletingId, setDeletingId] = useState(null);
 
+  const API = import.meta.env.VITE_API_URL;
+
   const { data: achievements = [], isLoading, error } = useQuery({
     queryKey: ["achievements"],
     queryFn: async () => {
-      const res = await axios.get("/api/admin/achievements");
+      const res = await axios.get(`${API}/api/admin/achievements`);
       return res.data;
     },
   });
@@ -22,7 +24,7 @@ export default function Achievements() {
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       setDeletingId(id);
-      return axios.delete(`/api/admin/achievements/${id}`);
+      return axios.delete(`${API}/api/admin/achievements/${id}`);
     },
     onSuccess: () => {
       toast.success("Achievement deleted");

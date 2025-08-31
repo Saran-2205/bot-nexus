@@ -74,10 +74,12 @@ const CompetitionDetail = () => {
     }
   };
 
+  const API = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     const fetchCompetition = async () => {
       try {
-        const response = await axios.get(`/api/competitions/${param}`);
+        const response = await axios.get(`${API}/api/competitions/${param}`);
         if (!response.data?.competition) {
           throw new Error("Competition data not found");
         }
@@ -94,7 +96,7 @@ const CompetitionDetail = () => {
     };
 
     fetchCompetition();
-  }, [param]);
+  }, [param,API]);
 
   if (loading) {
     return (

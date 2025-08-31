@@ -9,10 +9,12 @@ const CreateBlog = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const API = import.meta.env.VITE_API_URL;
+
   const { mutate: createMutation, isLoading } = useMutation({
     mutationFn: async (formData) => {
       try {
-        const res = await axios.post("/api/admin/blog/add", formData, {
+        const res = await axios.post(`${API}/api/admin/blog/add`, formData, {
           headers: {
             "Content-Type": "application/json",
           },
