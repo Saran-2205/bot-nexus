@@ -31,7 +31,7 @@ const TeamPage = lazy(() => import("./Pages/Admin/Team/TeamPage.jsx"));
 const CreateTeam = lazy(() => import("./Pages/Admin/Team/CreateTeam.jsx"));
 const EditTeam = lazy(() => import("./Pages/Admin/Team/EditTeam.jsx"));
 const BlogsPage = lazy(() => import("./Pages/Admin/Blogs/BlogsPage.jsx"));
-const CreateBlog = lazy(()=> import("./Pages/Admin/Blogs/CreateBlog.jsx"));
+const CreateBlog = lazy(() => import("./Pages/Admin/Blogs/CreateBlog.jsx"));
 const EditBlog = lazy(() => import("./Pages/Admin/Blogs/EditBlog.jsx"));
 const AdminLayout = lazy(() => import("./Components/Admin/AdminLayout.jsx"));
 
@@ -76,17 +76,17 @@ const AppRoutes = () => {
           <Route
             path="/nexus-hq"
             element={
-              <RequireAdmin>
-                <AdminLayout />
-              </RequireAdmin>
+
+              <AdminLayout />
+
             }
           >
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="feedback" element={<Feedback />} />
             <Route path="achievements" element={<Achievements />} />
-            <Route path="achievements/add" element={<AchievementForm/>}/>
-            <Route path="achievements/edit/:id" element={<AchievementForm/>}/>
+            <Route path="achievements/add" element={<AchievementForm />} />
+            <Route path="achievements/edit/:id" element={<AchievementForm />} />
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="projects/add" element={<CreateProject />} />
             <Route path="projects/edit/:slug" element={<EditProject />} />
