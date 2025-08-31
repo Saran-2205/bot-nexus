@@ -48,14 +48,6 @@ const Home = () => {
     queryFn: () => fetchData("team").then((data) => data.teamMembers),
   });
 
-  // 4. Blog Query
-  const {
-    data: blogData
-  } = useQuery({
-    queryKey: ["blog"],
-    queryFn: () => fetchData("blog").then((data) => data.blog || []),
-  });
-
   // 4. Latest Project Query
   const {
     data: latestProjectData,
@@ -522,92 +514,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Blog Preview */}
-      {blogData && (
-        <section className="py-12 md:py-20 px-4 sm:px-8 md:px-28 relative">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-8 md:mb-16">
-              <h2 className="font-['Orbitron'] text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-white">
-                Latest <span className="text-[#E53935]">Blog Posts</span>
-              </h2>
-              <p className="font-['Roboto'] text-gray-300 max-w-2xl mx-auto text-sm md:text-base px-4 md:px-0 leading-relaxed">
-                Stay updated with our latest projects, technical insights, and
-                team achievements through our blog.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              {blogData.map((post, index) => (
-                <div
-                  key={index}
-                  className="backdrop-blur-md bg-[#1a1a2e]/50 border border-[#E53935]/50 rounded-xl overflow-hidden transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,110,210,1)] hover:border-[#2196F3]/40 group cursor-pointer"
-                >
-                  <div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">
-                    <img
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f1c] to-transparent opacity-70"></div>
-                    <div className="absolute top-3 left-3 md:top-4 md:left-4">
-                      <span className="bg-[#E53935] backdrop-blur-sm text-xs font-['Roboto'] px-2 md:px-3 py-1 rounded-full text-black group-hover:bg-[#2196F3] transition-transform duration-300 font-medium">
-                        {post.date}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-3 right-3 md:bottom-4 md:right-4">
-                      <span className="bg-[#E53935] backdrop-blur-sm text-xs font-['Roboto'] px-2 md:px-3 py-1 rounded-full text-white group-hover:bg-[#2196F3] transition-transform duration-300">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-4 md:p-6">
-                    <div className="flex items-center mb-3">
-                      <i className="far fa-clock text-[#E53935] group-hover:text-[#2196F3] transition-all duration-300 mr-2 text-xs md:text-sm"></i>
-                      <span className="font-['Roboto'] text-xs text-gray-400">
-                        {post.readTime}
-                      </span>
-                    </div>
-                    <h3 className="font-['Orbitron'] text-lg md:text-xl font-bold mb-3 text-[#E53935] group-hover:text-[#2196F3] transition-colors duration-300 line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="font-['Roboto'] text-gray-300 text-sm mb-4 line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <button className="font-['Roboto'] text-sm text-[#E53935] group-hover:text-[#2196F3] transition-colors duration-300 flex items-center whitespace-nowrap cursor-pointer">
-                        Read Article
-                        <i className="fas fa-arrow-right ml-2 group-hover:ml-3 transition-all duration-300 text-xs"></i>
-                      </button>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 rounded-full overflow-hidden border border-[#E53935]/50 group-hover:border-[#2196F3]/50 transition-all duration-300">
-                          <img
-                            src="https://readdy.ai/api/search-image?query=professional%20portrait%20of%20young%20male%20writer%20in%20dark%20environment%20with%20subtle%20cyan%20lighting%2C%20focused%20expression%2C%20clean%20background%2C%20high%20quality%20professional%20headshot&width=100&height=100&seq=author-1&orientation=squarish"
-                            alt="Author"
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        <span className="font-['Roboto'] text-xs text-gray-400">
-                          By Team Lead
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center mt-8 md:mt-12">
-              <button
-                onClick={() => navigateTo("/blog")}
-                className="bg-[#E53935] text-black font-['Orbitron'] text-sm md:text-base font-semibold px-5 py-2 rounded-lg transition-all duration-300 hover:text-white hover:scale-105 hover:bg-[#2196F3] hover:shadow-[0_0_10px_#2196F3] hover:cursor-pointer"
-              >
-                View All Blogs{" "}
-                <i className="fas fa-chevron-right ml-2 text-sm"></i>
-              </button>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 };

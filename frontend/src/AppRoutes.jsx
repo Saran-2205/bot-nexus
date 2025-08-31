@@ -71,7 +71,7 @@ const AppRoutes = () => {
 
           {/* Admin Login Route */}
           <Route path="/nexus-hq/login" element={<LoginPage />} />
-
+          <Route path="/test" element={<div className="p-10 text-white">Test Page</div>} />
           {/* Admin Protected Routes */}
           <Route
             path="/nexus-hq"
