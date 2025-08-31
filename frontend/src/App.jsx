@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 function App() {
   return (
     <div className="bg-black text-white">
-      <Router>
+      <Router basename="/nexus-hq">
         <AppRoutes />
         <Toaster position="top-center" reverseOrder={false} />
       </Router>
