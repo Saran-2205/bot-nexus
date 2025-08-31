@@ -59,17 +59,20 @@ const teamSchema = new mongoose.Schema({
   },
 });
 
-teamSchema.pre("validate", function (next) {
-  if (!this.slug || this.isModified("name")) {
+
+teamSchema.pre("save", function(next) {
+  if (this.isModified("name")) {
     this.slug = slugify(this.name, { lower: true, strict: true });
   }
+  next();
+});
 
-  // Convert Google Drive link for main image
-  if (this.image) {
-    this.image = convertDriveLink(this.image);
+teamSchema.pre("findOneAndUpdate", function(next) {
+  const update = this.getUpdate();
+  if (update.name) {
+    update.slug = slugify(update.name, { lower: true, strict: true });
+    this.setUpdate(update);
   }
-
-  this.setUpdate(update);
   next();
 });
 

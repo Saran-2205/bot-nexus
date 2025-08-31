@@ -10,7 +10,8 @@ import projectRoutes from "./routes/public/project.route.js";
 import competitionRoutes from "./routes/public/competition.route.js";
 import teamRoutes from "./routes/public/team.route.js";
 import blogRoutes from "./routes/public/blog.route.js";
-import feedbackRoutes from "./routes/public/feedback.route.js"
+import feedbackRoutes from "./routes/public/feedback.route.js";
+import achievementRoutes from "./routes/public/achievement.route.js"
 
 import adminAuthRoutes from "./routes/admin/auth.admin.route.js";
 import adminDashBoardRoutes from "./routes/admin/dashboard.admin.route.js";
@@ -19,6 +20,8 @@ import adminCompetitionRoutes from "./routes/admin/competition.admin.route.js";
 import adminTeamRoutes from "./routes/admin/team.admin.route.js";
 import adminBlogRoutes from "./routes/admin/blog.admin.route.js";
 import adminFeedbackRoutes from "./routes/admin/feedback.admin.route.js"
+import adminAchievementRoutes from "./routes/admin/achievement.route.js";
+
 import cookieParser from "cookie-parser";
 
 dotenv.config();
@@ -45,12 +48,14 @@ app.use("/api/admin/competitions", protectRoute, adminCompetitionRoutes);
 app.use("/api/admin/team", protectRoute, adminTeamRoutes);
 app.use("/api/admin/blog", protectRoute, adminBlogRoutes);
 app.use("/api/admin/feedback",protectRoute , adminFeedbackRoutes);
+app.use("/api/admin/achievements",protectRoute , adminAchievementRoutes);
 
 app.use("/api/projects", projectRoutes);
 app.use("/api/competitions", competitionRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/team", teamRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/achievements", achievementRoutes);
 
 connectMongoDB().then(() => {
   app.listen(PORT, () => {

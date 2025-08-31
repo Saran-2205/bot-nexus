@@ -174,9 +174,9 @@ const Competition = () => {
 
             {/* Filter & Sort */}
             <div className="flex flex-wrap gap-3 w-full md:w-auto justify-center">
-              {filters.map((filter) => (
+              {filters.map((filter,i) => (
                 <button
-                  key={filter}
+                  key={i}
                   onClick={() => setActiveFilter(filter)}
                   className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-['Orbitron'] transition-all duration-200 cursor-pointer ${activeFilter === filter
                       ? "bg-[#E53935] text-black font-medium"
@@ -202,9 +202,9 @@ const Competition = () => {
 
                 {showSortDropdown && (
                   <div className="absolute right-0 mt-2 w-40 bg-[#1A1A25] border border-[#E53935]/30 rounded-lg shadow-lg z-10 overflow-hidden">
-                    {sortOptions.map((option) => (
+                    {sortOptions.map((option,i) => (
                       <button
-                        key={option}
+                        key={i}
                         onClick={() => {
                           setSortOption(option);
                           setShowSortDropdown(false);
@@ -231,9 +231,9 @@ const Competition = () => {
         {paginated.length > 0 ? (
           <>
             <div className="space-y-4 md:space-y-6">
-              {paginated.map((competition) => (
+              {paginated.map((competition,i) => (
                 <div
-                  key={competition.id}
+                  key={i}
                   className="backdrop-blur-md bg-[#1a1a2e]/50 border border-[#E53935]/30 rounded-xl overflow-hidden transition-all duration-300 hover:border-[#E53935]/50 group cursor-pointer flex flex-col md:flex-row"
                   onClick={() => navigate(`/competitions/${competition.slug}`)}
                 >
@@ -354,8 +354,8 @@ const Competition = () => {
                     value={perPage}
                     onChange={(e) => setPerPage(Number(e.target.value))}
                   >
-                    {[6, 9, 12].map((n) => (
-                      <option key={n} value={n}>
+                    {[6, 9, 12].map((n,i) => (
+                      <option key={i} value={n}>
                         {n}
                       </option>
                     ))}
@@ -387,9 +387,9 @@ const Competition = () => {
 
                   <div className="flex overflow-x-auto max-w-[200px] md:max-w-none">
                     {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                      (n) => (
+                      (n,i) => (
                         <button
-                          key={n}
+                          key={i}
                           onClick={() => setPage(n)}
                           className={`w-9 h-9 rounded-lg mx-1 text-sm flex-shrink-0 ${page === n
                               ? "bg-[#E53935] text-black font-medium"

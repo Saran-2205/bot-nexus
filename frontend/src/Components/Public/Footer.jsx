@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,11 @@ const Footer = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const navigate = useNavigate();
+  const navigateTo = (path) => {
+    navigate(path, { state: { fromHome: true } });
   };
 
   const handleSubmit = async (e) => {
@@ -34,6 +40,21 @@ const Footer = () => {
       toast.error("Error sending message.");
     }
   };
+
+  const contactLinks = [
+    {
+      platform: "instagram",
+      url: "https://www.instagram.com/botnexus_ceg",
+    },
+    {
+      platform: "linkedin-in",
+      url: "https://www.linkedin.com/company/botnexus",
+    },
+    {
+      platform: "youtube",
+      url: "https://www.youtube.com/@botnexus",
+    },
+  ];
 
   return (
     <footer className="bg-[#0f0f1c] pt-12 md:pt-20 pb-8 px-4 sm:px-6 lg:px-8">
@@ -78,15 +99,17 @@ const Footer = () => {
               </div>
             </div>
             <div className="flex space-x-3 md:space-x-4">
-              {["instagram", "linkedin-in", "youtube"].map(
+              {contactLinks.map(
                 (icon, index) => (
                   <a
-                    href="#"
+                    href={icon.url}
                     key={index}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center border border-[#E53935]/50 bg-[#1a1a2e] group hover:border-[#2196F3]/50 hover:bg-[#2196F3]/20 hover:scale-110 transition-all duration-300 cursor-pointer"
                   >
                     <i
-                      className={`fab fa-${icon} text-[#E53935] text-sm md:text-base group-hover:text-[#2196F3] transition-all duration-300`}
+                      className={`fab fa-${icon.platform} text-[#E53935] text-sm md:text-base group-hover:text-[#2196F3] transition-all duration-300`}
                     ></i>
                   </a>
                 )
@@ -110,7 +133,9 @@ const Footer = () => {
               ].map((item, index) => (
                 <li key={index}>
                   <div className="font-['Orbitron'] text-[#E53935] flex items-center text-sm md:text-base">
-                    <span className="hover:scale-105 group md:hover:scale-110 transition-all duration-300 cursor-pointer hover:text-[#2196F3]">
+                    <span
+                    onClick={()=>navigateTo(item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, '')}`)} 
+                    className="hover:scale-105 group md:hover:scale-110 transition-all duration-300 cursor-pointer hover:text-[#2196F3]">
                       <i className="fas fa-chevron-right text-xs pr-2 text-[#E53935] group-hover:text-[#2196F3]"></i>
                       {item}
                     </span>

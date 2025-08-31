@@ -39,6 +39,8 @@ import RequireAdmin from "./Components/Admin/RequireAdmin.jsx";
 import Feedback from "./Pages/Admin/Feedback.jsx";
 import ProjectDetail from "./Pages/Public/ProjectDetail.jsx";
 import CompetitionDetail from "./Pages/Public/CompetitionDetail.jsx";
+import Achievements from "./Pages/Admin/Achievements.jsx";
+import AchievementForm from "./Components/Admin/AchievementForm.jsx";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -82,6 +84,9 @@ const AppRoutes = () => {
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="feedback" element={<Feedback />} />
+            <Route path="achievements" element={<Achievements />} />
+            <Route path="achievements/add" element={<AchievementForm/>}/>
+            <Route path="achievements/edit/:id" element={<AchievementForm/>}/>
             <Route path="projects" element={<ProjectsPage />} />
             <Route path="projects/add" element={<CreateProject />} />
             <Route path="projects/edit/:slug" element={<EditProject />} />

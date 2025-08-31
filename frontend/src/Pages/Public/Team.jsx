@@ -40,7 +40,7 @@ const Team = () => {
   );
 
   const regularMembers = teamMembers.filter(
-    (member) => !teamLeads.includes(member) && !domainHeads.includes(member)
+    (member) => member.designation?.toLowerCase().includes("member")
   );
 
   if (loading) {
@@ -261,10 +261,12 @@ const LeaderCard = ({ member, accentColor = "red" }) => {
           {member.socialLinks?.gmail && (
             <a
               href={`mailto:${member.socialLinks.gmail}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 text-sm"
             >
               <i className="fas fa-envelope"></i>
-              <span className="hidden sm:inline">Email</span>
+              <span className="inline">Email</span>
             </a>
           )}
           {member.socialLinks?.linkedin && (
@@ -275,7 +277,7 @@ const LeaderCard = ({ member, accentColor = "red" }) => {
               className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 text-sm"
             >
               <i className="fab fa-linkedin-in"></i>
-              <span className="hidden sm:inline">LinkedIn</span>
+              <span className="inline">LinkedIn</span>
             </a>
           )}
           {member.socialLinks?.instagram && (

@@ -42,6 +42,7 @@ const AdminLayout = () => {
   const navItems = [
     { path: "/nexus-hq/dashboard", icon: <FaHome />, label: "Dashboard" },
     { path: "/nexus-hq/feedback", icon: <FaComment/>, label:"Feedbacks"},
+    { path: "/nexus-hq/achievements", icon: <FaTrophy />, label: "Achievements" },
     { path: "/nexus-hq/projects", icon: <FaFolder />, label: "Projects" },
     {
       path: "/nexus-hq/competitions",
