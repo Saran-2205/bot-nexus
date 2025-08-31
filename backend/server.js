@@ -36,12 +36,6 @@ const PORT = process.env.PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Minimal request logger (temporary, for debugging)
-app.use((req, _res, next) => {
-  console.log("REQ", req.method, req.path);
-  next();
-});
-
 // Middleware
 app.use(cors({
   origin: "https://bot-nexus-6qox.onrender.com",
