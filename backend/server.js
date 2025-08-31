@@ -38,7 +38,7 @@ const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors({
-  origin: "https://bot-nexus-6qox.onrender.com",
+  origin: ["https://bot-nexus-6qox.onrender.com", "https://www.botnexus.in/"],
   credentials: true
 }));
 app.use(express.json({ limit: "50mb" }));
