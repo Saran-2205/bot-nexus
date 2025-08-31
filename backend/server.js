@@ -1,54 +1,70 @@
 import express from "express";
-import connectMongoDB from "./db/connectMongoDB.js";
-import { protectRoute } from "./middleware/protectRoute.js";
-import path from "path";
 import dotenv from "dotenv";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+import path from "path";
+import { fileURLToPath } from "url";
 import { v2 as cloudinary } from "cloudinary";
 
+import connectMongoDB from "./db/connectMongoDB.js";
+import { protectRoute } from "./middleware/protectRoute.js";
+
+// Public routes
 import projectRoutes from "./routes/public/project.route.js";
 import competitionRoutes from "./routes/public/competition.route.js";
 import teamRoutes from "./routes/public/team.route.js";
 import blogRoutes from "./routes/public/blog.route.js";
 import feedbackRoutes from "./routes/public/feedback.route.js";
-import achievementRoutes from "./routes/public/achievement.route.js"
+import achievementRoutes from "./routes/public/achievement.route.js";
 
+// Admin routes
 import adminAuthRoutes from "./routes/admin/auth.admin.route.js";
 import adminDashBoardRoutes from "./routes/admin/dashboard.admin.route.js";
 import adminProjectRoutes from "./routes/admin/project.admin.route.js";
 import adminCompetitionRoutes from "./routes/admin/competition.admin.route.js";
 import adminTeamRoutes from "./routes/admin/team.admin.route.js";
 import adminBlogRoutes from "./routes/admin/blog.admin.route.js";
-import adminFeedbackRoutes from "./routes/admin/feedback.admin.route.js"
+import adminFeedbackRoutes from "./routes/admin/feedback.admin.route.js";
 import adminAchievementRoutes from "./routes/admin/achievement.route.js";
-
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const __dirname = path.resolve();
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Resolve paths relative to this file (not the shell you run from)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, "..", "frontend", "dist");
+
+// Minimal request logger (temporary, for debugging)
+app.use((req, _res, next) => {
+  console.log("REQ", req.method, req.path);
+  next();
+});
+
+// Middleware
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 
+// Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// APIs
 app.use("/api/admin/auth", adminAuthRoutes);
 app.use("/api/admin/dashboard", protectRoute, adminDashBoardRoutes);
 app.use("/api/admin/projects", protectRoute, adminProjectRoutes);
 app.use("/api/admin/competitions", protectRoute, adminCompetitionRoutes);
 app.use("/api/admin/team", protectRoute, adminTeamRoutes);
 app.use("/api/admin/blog", protectRoute, adminBlogRoutes);
-app.use("/api/admin/feedback",protectRoute , adminFeedbackRoutes);
-app.use("/api/admin/achievements",protectRoute , adminAchievementRoutes);
+app.use("/api/admin/feedback", protectRoute, adminFeedbackRoutes);
+app.use("/api/admin/achievements", protectRoute, adminAchievementRoutes);
 
 app.use("/api/projects", projectRoutes);
 app.use("/api/competitions", competitionRoutes);
@@ -57,8 +73,21 @@ app.use("/api/team", teamRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/achievements", achievementRoutes);
 
+// Static frontend build (explicit + root)
+console.log("Serving static from:", distPath);
+app.use(express.static(distPath));
+app.use("/assets", express.static(path.join(distPath, "assets"))); // explicit hashed assets
+
+// SPA fallback (only for non-file, non-API)
+app.get("*", (req, res, next) => {
+  if (req.path.startsWith("/api")) return next();
+  if (/\.[^/]+$/.test(req.path)) return next(); // has an extension -> treat as file
+  res.sendFile(path.join(distPath, "index.html"));
+});
+
+// Start server after DB connects
 connectMongoDB().then(() => {
   app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`✅ Server running at http://localhost:${PORT}`);
   });
 });
