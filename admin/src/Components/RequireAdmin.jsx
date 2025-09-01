@@ -5,15 +5,13 @@ import LoadingSpinner from "./LoadingSpinner.jsx";
 const API = import.meta.env.VITE_API_URL;
 
 const fetchCurrentAdmin = async () => {
-  const token = localStorage.getItem("token"); // Or wherever you save it
   const res = await fetch(`${API}/api/admin/auth/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    credentials: 'include', // ✅ required to send cookies!
   });
   if (!res.ok) throw new Error("Not authenticated");
   return res.json();
 };
+
 
 
 const RequireAdmin = ({ children }) => {

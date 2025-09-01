@@ -34,7 +34,8 @@ const LoginPage = () => {
         throw new Error(error.response?.data?.error || "Something went wrong");
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token); // store JWT
       toast.success("Logged in Successfully");
       queryClient.invalidateQueries({ queryKey: ["user"] });
       navigate("/dashboard");

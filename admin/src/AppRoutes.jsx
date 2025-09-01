@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import { Suspense } from "react";
 
 import "./App.css";
@@ -29,8 +29,6 @@ import EditBlog from "./Pages/Blogs/EditBlog.jsx";
 
 
 const AppRoutes = () => {
-  const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/");
 
   return (
     <div className="bg-black text-white min-h-screen">
