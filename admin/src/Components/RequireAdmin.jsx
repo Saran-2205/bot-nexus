@@ -5,10 +5,16 @@ import LoadingSpinner from "./LoadingSpinner.jsx";
 const API = import.meta.env.VITE_API_URL;
 
 const fetchCurrentAdmin = async () => {
-  const res = await fetch(`${API}/api/admin/auth/me`, { credentials: "include" });
+  const token = localStorage.getItem("token"); // Or wherever you save it
+  const res = await fetch(`${API}/api/admin/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   if (!res.ok) throw new Error("Not authenticated");
   return res.json();
 };
+
 
 const RequireAdmin = ({ children }) => {
   const location = useLocation();
