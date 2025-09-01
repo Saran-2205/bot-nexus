@@ -18,38 +18,16 @@ import Competitions from "./Pages/Public/Competitions.jsx";
 import Team from "./Pages/Public/Team.jsx";
 import Projects from "./Pages/Public/Projects.jsx";
 
-// Lazy Admin Pages
-const LoginPage = lazy(() => import("./Pages/Admin/LoginPage.jsx"));
-const Dashboard = lazy(() => import("./Pages/Admin/Dashboard.jsx"));
-const ProjectsPage = lazy(() => import("./Pages/Admin/Projects/ProjectsPage.jsx"));
-const CreateProject = lazy(() => import("./Pages/Admin/Projects/CreateProject.jsx"));
-const EditProject = lazy(() => import("./Pages/Admin/Projects/EditProject.jsx"));
-const CompetitionsPage = lazy(() => import("./Pages/Admin/Competitions/CompetitionsPage.jsx"));
-const CreateCompetition = lazy(() => import("./Pages/Admin/Competitions/CreateCompetition.jsx"));
-const EditCompetition = lazy(() => import("./Pages/Admin/Competitions/EditCompetiton.jsx"));
-const TeamPage = lazy(() => import("./Pages/Admin/Team/TeamPage.jsx"));
-const CreateTeam = lazy(() => import("./Pages/Admin/Team/CreateTeam.jsx"));
-const EditTeam = lazy(() => import("./Pages/Admin/Team/EditTeam.jsx"));
-const BlogsPage = lazy(() => import("./Pages/Admin/Blogs/BlogsPage.jsx"));
-const CreateBlog = lazy(()=> import("./Pages/Admin/Blogs/CreateBlog.jsx"));
-const EditBlog = lazy(() => import("./Pages/Admin/Blogs/EditBlog.jsx"));
-const AdminLayout = lazy(() => import("./Components/Admin/AdminLayout.jsx"));
-
-import RequireAdmin from "./Components/Admin/RequireAdmin.jsx";
-import Feedback from "./Pages/Admin/Feedback.jsx";
 import ProjectDetail from "./Pages/Public/ProjectDetail.jsx";
 import CompetitionDetail from "./Pages/Public/CompetitionDetail.jsx";
-import Achievements from "./Pages/Admin/Achievements.jsx";
-import AchievementForm from "./Components/Admin/AchievementForm.jsx";
 
 const AppRoutes = () => {
   const location = useLocation();
-  const isAdminRoute = location.pathname.startsWith("/nexus-hq");
 
   return (
     <div className="bg-black text-white min-h-screen">
       <ScrollToTop />
-      {!isAdminRoute && <Navbar />}
+      <Navbar />
 
       <Suspense
         fallback={
@@ -68,41 +46,11 @@ const AppRoutes = () => {
           <Route path="/team" element={<Team />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/aboutus" element={<AboutUs />} />
-
-          {/* Admin Login Route */}
-          <Route path="/nexus-hq/login" element={<LoginPage />} />
-          {/* Admin Protected Routes */}
-          <Route
-            path="/nexus-hq"
-            element={
-              <RequireAdmin>
-                <AdminLayout />
-              </RequireAdmin>
-            }
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="feedback" element={<Feedback />} />
-            <Route path="achievements" element={<Achievements />} />
-            <Route path="achievements/add" element={<AchievementForm/>}/>
-            <Route path="achievements/edit/:id" element={<AchievementForm/>}/>
-            <Route path="projects" element={<ProjectsPage />} />
-            <Route path="projects/add" element={<CreateProject />} />
-            <Route path="projects/edit/:slug" element={<EditProject />} />
-            <Route path="competitions" element={<CompetitionsPage />} />
-            <Route path="competitions/add" element={<CreateCompetition />} />
-            <Route path="competitions/edit/:slug" element={<EditCompetition />} />
-            <Route path="team" element={<TeamPage />} />
-            <Route path="team/add" element={<CreateTeam />} />
-            <Route path="team/edit/:slug" element={<EditTeam />} />
-            <Route path="blog" element={<BlogsPage />} />
-            <Route path="blog/add" element={<CreateBlog />} />
-            <Route path="blog/edit/:slug" element={<EditBlog />} />
-          </Route>
+          
         </Routes>
       </Suspense>
 
-      {!isAdminRoute && <Footer />}
+      <Footer />
     </div>
   );
 };
