@@ -38,6 +38,7 @@ import EditTeam from "./Pages/Admin/Team/EditTeam.jsx";
 import BlogsPage from "./Pages/Admin/Blogs/BlogsPage.jsx";
 import CreateBlog from "./Pages/Admin/Blogs/CreateBlog.jsx";
 import EditBlog from "./Pages/Admin/Blogs/EditBlog.jsx";
+import AdminLayout from "./Components/Admin/AdminLayout.jsx";
 
 const AppRoutes = () => {
   const location = useLocation();
