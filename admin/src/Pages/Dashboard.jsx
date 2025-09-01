@@ -29,8 +29,7 @@ const Dashboard = () => {
       } catch (error) {
         throw new Error(error?.response?.data?.message || error.message || "Unknown error occurred");
       }
-    },
-    enabled: !!token, // only run if token exists
+    }, // only run if token exists
   });
 
 
