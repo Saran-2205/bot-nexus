@@ -10,11 +10,17 @@ const Dashboard = () => {
 
   const API = import.meta.env.VITE_API_URL;
 
+  const token = localStorage.getItem("authToken"); // Or wherever you store your token
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: async () => {
       try {
-        const res = await axios.get(`${API}/api/admin/dashboard/get`);
+        const res = await axios.get(`${API}/api/admin/dashboard/get`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (res.status !== 200) {
           throw new Error(res.data.message || "Failed to fetch dashboard stats");
         }
@@ -24,6 +30,7 @@ const Dashboard = () => {
       }
     },
   });
+
 
   const recentActivity = [
     { action: "Project Falcon updated", status: "completed", time: "2 days ago" },
@@ -126,8 +133,8 @@ const Dashboard = () => {
               className="flex items-start border-b border-[#E93535]/10 pb-4 last:border-0"
             >
               <div className={`mr-3 mt-1 ${activity.status === 'completed' ? 'text-green-500' :
-                  activity.status === 'published' ? 'text-blue-400' :
-                    'text-yellow-500'
+                activity.status === 'published' ? 'text-blue-400' :
+                  'text-yellow-500'
                 }`}>
                 {activity.status === 'completed' ? '✅' :
                   activity.status === 'published' ? '📝' : '⚙️'}
