@@ -16,13 +16,11 @@ const Dashboard = () => {
       try {
         const res = await axios.get(`${API}/api/admin/dashboard/get`);
         if (res.status !== 200) {
-          throw new Error(
-            res.data.message || "Failed to fetch dashboard stats"
-          );
+          throw new Error(res.data.message || "Failed to fetch dashboard stats");
         }
         return res.data;
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error?.message || "Unknown error occurred");
       }
     },
   });
@@ -82,7 +80,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -90,7 +88,7 @@ const Dashboard = () => {
     >
       {/* Header */}
       <div className="pt-8 pb-6 px-6 text-center">
-        <motion.h1 
+        <motion.h1
           initial={{ y: -20 }}
           animate={{ y: 0 }}
           className="text-4xl md:text-5xl font-bold text-[#E93535] mb-2"
@@ -99,7 +97,7 @@ const Dashboard = () => {
         </motion.h1>
         <p className="text-gray-400">Admin Dashboard </p>
       </div>
-      
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-6">
         {stats.map((item, idx) => (
@@ -108,7 +106,7 @@ const Dashboard = () => {
       </div>
 
       {/* Recent Activity */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
@@ -120,20 +118,19 @@ const Dashboard = () => {
         </h2>
         <ul className="space-y-4">
           {recentActivity.map((activity, idx) => (
-            <motion.li 
+            <motion.li
               key={idx}
               initial={{ x: -20 }}
               animate={{ x: 0 }}
               transition={{ delay: 0.1 * idx }}
               className="flex items-start border-b border-[#E93535]/10 pb-4 last:border-0"
             >
-              <div className={`mr-3 mt-1 ${
-                activity.status === 'completed' ? 'text-green-500' : 
-                activity.status === 'published' ? 'text-blue-400' : 
-                'text-yellow-500'
-              }`}>
-                {activity.status === 'completed' ? '✅' : 
-                 activity.status === 'published' ? '📝' : '⚙️'}
+              <div className={`mr-3 mt-1 ${activity.status === 'completed' ? 'text-green-500' :
+                  activity.status === 'published' ? 'text-blue-400' :
+                    'text-yellow-500'
+                }`}>
+                {activity.status === 'completed' ? '✅' :
+                  activity.status === 'published' ? '📝' : '⚙️'}
               </div>
               <div>
                 <p className="text-white">{activity.action}</p>
