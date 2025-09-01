@@ -10,11 +10,12 @@ const Dashboard = () => {
 
   const API = import.meta.env.VITE_API_URL;
 
-  const token = localStorage.getItem("authToken"); // Or wherever you store your token
+  const token = localStorage.getItem("authToken");
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["dashboardStats"],
+    queryKey: ["dashboardStats", token], // token as part of key to refetch if token changes
     queryFn: async () => {
+      if (!token) throw new Error("No auth token found");
       try {
         const res = await axios.get(`${API}/api/admin/dashboard/get`, {
           headers: {
@@ -26,10 +27,12 @@ const Dashboard = () => {
         }
         return res.data;
       } catch (error) {
-        throw new Error(error?.message || "Unknown error occurred");
+        throw new Error(error?.response?.data?.message || error.message || "Unknown error occurred");
       }
     },
+    enabled: !!token, // only run if token exists
   });
+
 
 
   const recentActivity = [
