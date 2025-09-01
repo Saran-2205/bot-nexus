@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 
 import "./App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -18,29 +18,26 @@ import Competitions from "./Pages/Public/Competitions.jsx";
 import Team from "./Pages/Public/Team.jsx";
 import Projects from "./Pages/Public/Projects.jsx";
 
-// Lazy Admin Pages
-const LoginPage = lazy(() => import("./Pages/Admin/LoginPage.jsx"));
-const Dashboard = lazy(() => import("./Pages/Admin/Dashboard.jsx"));
-const ProjectsPage = lazy(() => import("./Pages/Admin/Projects/ProjectsPage.jsx"));
-const CreateProject = lazy(() => import("./Pages/Admin/Projects/CreateProject.jsx"));
-const EditProject = lazy(() => import("./Pages/Admin/Projects/EditProject.jsx"));
-const CompetitionsPage = lazy(() => import("./Pages/Admin/Competitions/CompetitionsPage.jsx"));
-const CreateCompetition = lazy(() => import("./Pages/Admin/Competitions/CreateCompetition.jsx"));
-const EditCompetition = lazy(() => import("./Pages/Admin/Competitions/EditCompetiton.jsx"));
-const TeamPage = lazy(() => import("./Pages/Admin/Team/TeamPage.jsx"));
-const CreateTeam = lazy(() => import("./Pages/Admin/Team/CreateTeam.jsx"));
-const EditTeam = lazy(() => import("./Pages/Admin/Team/EditTeam.jsx"));
-const BlogsPage = lazy(() => import("./Pages/Admin/Blogs/BlogsPage.jsx"));
-const CreateBlog = lazy(()=> import("./Pages/Admin/Blogs/CreateBlog.jsx"));
-const EditBlog = lazy(() => import("./Pages/Admin/Blogs/EditBlog.jsx"));
-const AdminLayout = lazy(() => import("./Components/Admin/AdminLayout.jsx"));
-
+import LoginPage from "./Pages/Admin/LoginPage.jsx";
 import RequireAdmin from "./Components/Admin/RequireAdmin.jsx";
 import Feedback from "./Pages/Admin/Feedback.jsx";
 import ProjectDetail from "./Pages/Public/ProjectDetail.jsx";
 import CompetitionDetail from "./Pages/Public/CompetitionDetail.jsx";
 import Achievements from "./Pages/Admin/Achievements.jsx";
 import AchievementForm from "./Components/Admin/AchievementForm.jsx";
+import Dashboard from "./Pages/Admin/Dashboard.jsx";
+import ProjectsPage from "./Pages/Admin/Projects/ProjectsPage.jsx";
+import CreateProjectPage from "./Pages/Admin/Projects/CreateProject.jsx";
+import EditProject from "./Pages/Admin/Projects/EditProject.jsx";
+import CompetitionsPage from "./Pages/Admin/Competitions/CompetitionsPage.jsx";
+import CreateCompetitionPage from "./Pages/Admin/Competitions/CreateCompetition.jsx";
+import EditCompetition from "./Pages/Admin/Competitions/EditCompetiton.jsx";
+import TeamPage from "./Pages/Admin/Team/TeamPage.jsx";
+import CreateTeamPage from "./Pages/Admin/Team/CreateTeam.jsx";
+import EditTeam from "./Pages/Admin/Team/EditTeam.jsx";
+import BlogsPage from "./Pages/Admin/Blogs/BlogsPage.jsx";
+import CreateBlog from "./Pages/Admin/Blogs/CreateBlog.jsx";
+import EditBlog from "./Pages/Admin/Blogs/EditBlog.jsx";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -86,14 +83,14 @@ const AppRoutes = () => {
             <Route path="achievements" element={<Achievements />} />
             <Route path="achievements/add" element={<AchievementForm/>}/>
             <Route path="achievements/edit/:id" element={<AchievementForm/>}/>
-            <Route path="projects" element={<ProjectsPage />} />
-            <Route path="projects/add" element={<CreateProject />} />
+            <Route path="projects" element={<ProjectsPage/>} />
+            <Route path="projects/add" element={<CreateProjectPage />} />
             <Route path="projects/edit/:slug" element={<EditProject />} />
             <Route path="competitions" element={<CompetitionsPage />} />
-            <Route path="competitions/add" element={<CreateCompetition />} />
+            <Route path="competitions/add" element={<CreateCompetitionPage />} />
             <Route path="competitions/edit/:slug" element={<EditCompetition />} />
             <Route path="team" element={<TeamPage />} />
-            <Route path="team/add" element={<CreateTeam />} />
+            <Route path="team/add" element={<CreateTeamPage />} />
             <Route path="team/edit/:slug" element={<EditTeam />} />
             <Route path="blog" element={<BlogsPage />} />
             <Route path="blog/add" element={<CreateBlog />} />
