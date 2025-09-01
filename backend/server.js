@@ -36,7 +36,7 @@ const PORT = process.env.PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const allowedOrigins = ['https://www.botnexus.in','https://bot-nexus-6qox.onrender.com','https://neuxs-hq.onrender.com/'];
+const allowedOrigins = ['https://www.botnexus.in','https://bot-nexus-6qox.onrender.com','https://neuxs-hq.onrender.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
