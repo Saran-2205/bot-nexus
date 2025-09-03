@@ -7,10 +7,7 @@ const API = import.meta.env.VITE_API_URL;
 const fetchCurrentAdmin = async () => {
   const res = await fetch(`${API}/api/admin/auth/me`, {
     method: "GET",
-    credentials: "include", // ✅ Ensures cookies are sent
-    headers: {
-      "Content-Type": "application/json",
-    },
+    credentials: "include", // ✅ Required for cookies
   });
 
   if (!res.ok) throw new Error("Not authenticated");
