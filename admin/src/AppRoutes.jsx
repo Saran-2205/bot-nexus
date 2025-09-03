@@ -40,6 +40,7 @@ const AppRoutes = () => {
       >
         <Routes>
           {/* Admin Login Route */}
+          <Route path="/" element={<Navigate to="/nexus-hq/login" replace />} />
           <Route path="/nexus-hq/login" element={<LoginPage />} />
           {/* Admin Protected Routes */}
           <Route
