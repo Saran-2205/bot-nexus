@@ -36,13 +36,15 @@ const PORT = process.env.PORT || 5000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const allowedOrigins = ['https://www.botnexus.in','https://bot-nexus-6qox.onrender.com','https://nexus-hq.onrender.com'];
+const allowedOrigins = ['https://www.botnexus.in', 'https://bot-nexus-6qox.onrender.com', 'https://nexus-hq.onrender.com','http://localhost:5173'];
 
 app.use(cors({
   origin: function (origin, callback) {
+    console.log("Incoming origin:", origin);
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.log("Rejected by CORS:", origin);
       callback(new Error('Not allowed by CORS'));
     }
   },

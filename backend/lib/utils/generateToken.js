@@ -12,9 +12,6 @@ const generateTokenAndSetCookie = (userId, res) => {
         sameSite: "None", //CSRF attacks
     })
 
-    console.log("Cookies:", req.cookies);
-    console.log("JWT:", req.cookies.jwt);
-
 };
 
 export default generateTokenAndSetCookie;
