@@ -36,7 +36,6 @@ const allowedOrigins = ['https://www.botnexus.in', 'https://bot-nexus-6qox.onren
 app.use(cors({
   origin: function (origin, callback) {
     console.log("Incoming origin:", origin);
-    if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
