@@ -12,8 +12,6 @@ const LoginPage = () => {
 
   const API = import.meta.env.VITE_API_URL;
 
-
-
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
