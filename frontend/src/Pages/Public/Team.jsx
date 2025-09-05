@@ -328,10 +328,10 @@ const TeamMemberCard = ({ member, accentColor = "blue", compact = false }) => {
               />
             </div>
             <div className="text-center">
-              <h3 className="font-['Roboto'] font-medium text-white text-xs md:text-sm truncate px-1">
+              <h3 className="font-['Roboto'] font-medium text-white text-sm md:text-sm truncate px-1">
                 {member.name}
               </h3>
-              <p className={`font-['Roboto'] ${colors.text} truncate text-xs`}>
+              <p className={`font-['Roboto'] ${colors.text} truncate text-xs mt-1 md:mt-2 px-1`}>
                 {member.specialization}
               </p>
             </div>
