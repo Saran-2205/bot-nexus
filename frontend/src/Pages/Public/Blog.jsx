@@ -23,6 +23,10 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen bg-black py-28 px-4 sm:px-6 lg:px-8">
+      <div>
+        <title>Our Blog | Bot Nexus</title>
+        <meta name="description" content="Stay updated with the latest in technology and innovation" />
+      </div>
       <div className="max-w-4xl mx-auto text-center">
         <div className="mb-12">
           <h1 className="text-4xl text-white font-bold sm:text-5xl lg:text-4xl font-['Orbitron'] mb-6">

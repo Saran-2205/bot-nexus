@@ -74,7 +74,7 @@ const Project = () => {
   if (isLoading) {
     return (
       <div className="pt-[67px] px-4 sm:px-8 md:px-28 min-h-screen bg-black text-white flex items-center justify-center">
-        <LoadingSpinner/>
+        <LoadingSpinner />
       </div>
     );
   }
@@ -83,6 +83,10 @@ const Project = () => {
   if (error) {
     return (
       <div className="pt-[67px] min-h-screen bg-black text-white px-6 py-16 text-center">
+        <div>
+          <title>Our Projects | Bot Nexus</title>
+          <meta name="description" content="Explore our projects" />
+        </div>
         <div className="container mx-auto">
           <h2 className="font-['Orbitron'] text-3xl font-bold mb-4">
             Project <span className="text-[#E53935]">Nexus</span>
@@ -103,7 +107,7 @@ const Project = () => {
 
   const formatMonthYear = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", { day:"numeric",month: "long", year: "numeric" });
+    return date.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
   };
 
   return (
@@ -145,11 +149,10 @@ const Project = () => {
                     <button
                       key={filter}
                       onClick={() => setActiveFilter(filter)}
-                      className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-['Orbitron'] transition-all duration-200 flex-1 sm:flex-none ${
-                        activeFilter === filter
+                      className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-['Orbitron'] transition-all duration-200 flex-1 sm:flex-none ${activeFilter === filter
                           ? "bg-[#E53935] text-black font-medium"
                           : "bg-[#1A1A25] text-gray-300 hover:bg-[#252535]"
-                      }`}
+                        }`}
                     >
                       {filter}
                     </button>
@@ -164,9 +167,8 @@ const Project = () => {
                     <FaCode className="text-[#E53935] text-sm" />
                     {sortOption}
                     <FiChevronDown
-                      className={`transition-transform ${
-                        showSortDropdown ? "rotate-180" : ""
-                      }`}
+                      className={`transition-transform ${showSortDropdown ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -179,11 +181,10 @@ const Project = () => {
                             setSortOption(option);
                             setShowSortDropdown(false);
                           }}
-                          className={`w-full text-left px-3 py-2 text-sm font-['Roboto'] flex items-center gap-2 hover:bg-[#252535] ${
-                            sortOption === option
+                          className={`w-full text-left px-3 py-2 text-sm font-['Roboto'] flex items-center gap-2 hover:bg-[#252535] ${sortOption === option
                               ? "text-[#2196F3]"
                               : "text-gray-300"
-                          }`}
+                            }`}
                         >
                           {sortOption === option && (
                             <FiCheck className="text-[#2196F3]" />
@@ -314,10 +315,9 @@ const Project = () => {
 
                       <div className="flex items-center gap-2 cursor-pointer">
                         <span
-                          className={`text-xs px-2.5 py-1 rounded-full border ${
-                            statusStyles[project.status?.toLowerCase()] ||
+                          className={`text-xs px-2.5 py-1 rounded-full border ${statusStyles[project.status?.toLowerCase()] ||
                             "bg-blue-500/20 text-blue-500 border-blue-500/50"
-                          } font-['Roboto']`}
+                            } font-['Roboto']`}
                         >
                           {project.status?.charAt(0).toUpperCase() +
                             project.status?.slice(1)}

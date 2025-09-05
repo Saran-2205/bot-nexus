@@ -86,7 +86,7 @@ const Team = () => {
         {teamLeads.length > 0 && (
           <div className="mb-16 md:mb-20">
             <SectionHeader
-              title="Team Head"
+              title="Team Lead"
               accentColor="text-red-500"
               lineColor="bg-red-500"
             />
@@ -332,7 +332,7 @@ const TeamMemberCard = ({ member, accentColor = "blue", compact = false }) => {
                 {member.name}
               </h3>
               <p className={`font-['Roboto'] ${colors.text} truncate text-xs`}>
-                {member.designation}
+                {member.specialization}
               </p>
             </div>
           </div>

@@ -55,6 +55,10 @@ const AboutUs = () => {
 
   return (
     <div className="bg-black text-gray-200 min-h-screen font-['Roboto']">
+      <div>
+        <title>Our Story | Bot Nexus</title>
+        <meta name="description" content="Learn about the journey and mission of Bot Nexus" />
+      </div>
 
       {/* Header */}
       <section className="bg-black pt-20 md:pt-20 md:py-10 px-4 md:px-6">

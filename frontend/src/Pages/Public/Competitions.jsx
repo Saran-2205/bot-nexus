@@ -132,6 +132,10 @@ const Competition = () => {
 
   return (
     <div className="min-h-screen bg-black px-4 md:px-28 text-white relative">
+      <div>
+        <title> Competition Arena | Bot Nexus</title>
+        <meta name="description" content="Showcasing our achievements in robotics competitions" />
+      </div>
       {/* Mobile Filter Toggle */}
       {isMobile && (
         <div className="top-20 right-4 z-40">
