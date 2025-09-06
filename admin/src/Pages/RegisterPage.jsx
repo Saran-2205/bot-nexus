@@ -35,7 +35,7 @@ const RegisterPage = () => {
         },
         onSuccess: () => {
             toast.success("Registration successful!");
-            navigate("/dashboard");
+            navigate("/nexus-hq/dashboard");
         },
         onError: (error) => {
             toast.error(error.message || "Registration failed. Please try again.");
