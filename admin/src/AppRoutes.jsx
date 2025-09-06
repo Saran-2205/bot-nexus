@@ -26,6 +26,7 @@ import BlogsPage from "./Pages/Blogs/BlogsPage.jsx";
 import CreateBlog from "./Pages/Blogs/CreateBlog.jsx";
 import EditBlog from "./Pages/Blogs/EditBlog.jsx";
 import ScrollToTop from "./Components/ScrollToTop.jsx";
+import RegisterPage from "./Pages/RegisterPage.jsx";
 
 const AppRoutes = () => {
   return (
@@ -53,6 +54,7 @@ const AppRoutes = () => {
             }
           >
             <Route index element={<Dashboard />} />
+            <Route path="register" element={<RegisterPage isAuthenticated={true} />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="feedback" element={<Feedback />} />
             <Route path="achievements" element={<Achievements />} />

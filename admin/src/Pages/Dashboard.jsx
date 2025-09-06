@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "../Components/LoadingSpinner.jsx";
@@ -6,8 +6,10 @@ import axios from "axios";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import RegisterPage from "./RegisterPage.jsx";
 
 const Dashboard = () => {
+   const navigate = useNavigate();
 
   const API = import.meta.env.VITE_API_URL;
 
@@ -125,7 +127,7 @@ const Dashboard = () => {
         className="bg-[#1a1a2e]/90 p-6 mx-6 rounded-2xl border border-[#E93535]/30 shadow-lg backdrop-blur-sm"
       >
         <h2 className="text-2xl font-bold text-[#E93535] mb-6 flex items-center">
-          <span className="w-4 h-4 bg-[#E93535] rounded-full mr-3 animate-pulse"></span>
+          <span className="w-4 h-4 bg-[#E93535] rounded-full mr-3 animate-pulse" onClick={() => navigate("nexus-hq/register")}></span>
           Recent Activity
         </h2>
         <ul className="space-y-4">
