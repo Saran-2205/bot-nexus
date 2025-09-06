@@ -22,7 +22,7 @@ const AdminCard = ({
       <div className="relative h-48 overflow-hidden rounded-lg mb-4">
         <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d1a]/90 via-[#0d0d1a]/30 to-transparent z-10" />
         <img
-          src={image || "/project-icon.jpg"}
+          src={image}
           alt={title}
           className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
