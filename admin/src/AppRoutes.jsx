@@ -54,7 +54,7 @@ const AppRoutes = () => {
             }
           >
             <Route index element={<Dashboard />} />
-            <Route path="register" element={<RegisterPage isAuthenticated={true} />} />
+            <Route path="dashboard/register" element={<RegisterPage isAuthenticated={true} />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="feedback" element={<Feedback />} />
             <Route path="achievements" element={<Achievements />} />
