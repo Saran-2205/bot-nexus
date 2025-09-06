@@ -24,7 +24,7 @@ const RegisterPage = () => {
         mutationFn: async ({ username, email, password }) => {
             try {
                 const res = await axios.post(
-                    `${API}/api/register`,
+                    `${API}/api/admin/auth/register`,
                     { username, email, password },
                     { withCredentials: true }
                 );
@@ -35,7 +35,7 @@ const RegisterPage = () => {
         },
         onSuccess: () => {
             toast.success("Registration successful!");
-            navigate("/login");
+            navigate("/dashboard");
         },
         onError: (error) => {
             toast.error(error.message || "Registration failed. Please try again.");
