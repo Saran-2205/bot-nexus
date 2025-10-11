@@ -1,0 +1,23 @@
+{
+  "name": "botnexus-backend",
+  "version": "1.0.0",
+  "description": "BotNexus backend",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.6.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.16.0",
+    "mongoose": "^8.15.1",
+    "path-to-regexp": "^6.2.1",
+    "slugify": "^1.6.6"
+  }
+}
