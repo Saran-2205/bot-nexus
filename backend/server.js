@@ -31,7 +31,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(cookieParser());
 
-const allowedOrigins = ['https://www.botnexus.in', 'https://bot-nexus-6qox.onrender.com', 'https://nexus-hq.onrender.com'];
+const allowedOrigins = ['https://www.botnexus.in', 'https://bot-nexus-6qox.onrender.com', 'https://nexus-hq.onrender.com','http://localhost:3000'];
 
 app.use(cors({
   origin: function (origin, callback) {
