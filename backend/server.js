@@ -80,6 +80,10 @@ app.use("/api/team", teamRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/achievements", achievementRoutes);
 
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok, Backend is Running' })
+})
+
 // Start server after DB connects
 connectMongoDB().then(() => {
   app.listen(PORT, () => {
