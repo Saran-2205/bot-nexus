@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import SafeImg from "../../Components/SafeImg";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -151,7 +152,7 @@ const Home = () => {
                     onClick={() => navigateTo("nexus-hq/login")}
                     className="aspect-w-16 aspect-h-9 w-full cursor-pointer overflow-hidden rounded-lg shadow-[0_0_20px_rgba(255,0,0,0.2)] sm:shadow-[0_0_30px_rgba(255,0,0,0.2)]"
                   >
-                    <img
+                    <SafeImg
                       src={latestProject.img}
                       alt={latestProject.title || "Latest Project"}
                       className="w-full h-full object-cover"
@@ -249,7 +250,7 @@ const Home = () => {
               {/* Image Content */}
               <div className="w-full lg:w-1/2 relative">
                 <div className="relative">
-                  <img
+                  <SafeImg
                     src="https://readdy.ai/api/search-image?query=futuristic%20robotics%20lab%20with%20multiple%20robots%20being%20developed%2C%20engineers%20working%20on%20high-tech%20equipment%2C%20dark%20environment%20with%20cyan%20and%20purple%20lighting%20accents%2C%20cutting-edge%20technology%20workspace%20with%20computer%20screens%20and%20robotic%20parts%2C%20professional%20photography%20with%20dramatic%20lighting&width=800&height=600&seq=intro-image-1&orientation=landscape"
                     alt="Our Robotics Lab"
                     className="w-full h-auto rounded-lg shadow-lg"
@@ -308,7 +309,7 @@ const Home = () => {
                     className="bg-[#0d0d1a]/70 border text-[#E53935] hover:text-[#2196F3] border-[#E53935]/50 rounded-2xl backdrop-blur-xl overflow-hidden group hover:border-[#2196F3]/10 hover:shadow-[0_0_30px_rgba(0,110,210,1)] hover:cursor-pointer transition-all duration-300"
                   >
                     <div className="relative h-40 md:h-48 overflow-hidden">
-                      <img
+                      <SafeImg
                         src={project.img}
                         alt={`Image of ${project.title}`}
                         className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
@@ -389,7 +390,7 @@ const Home = () => {
                       className="backdrop-blur-md bg-[#1a1a2e]/50 border border-[#E53935]/50 rounded-xl w-72 md:w-85 group flex-shrink-0 transition-all duration-300 hover:border-[#2196F3]/20 hover:shadow-[0_0_25px_rgba(0,110,210,1)] cursor-pointer"
                     >
                       <div className="relative overflow-hidden rounded-t-xl h-40 md:h-48">
-                        <img
+                        <SafeImg
                           src={competition.heroImg}
                           alt={competition.title}
                           className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-110"
@@ -480,7 +481,7 @@ const Home = () => {
                   <div className="p-4 md:p-6 flex flex-col items-center">
                     <div className="relative w-20 h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 mb-4 md:mb-6">
                       <div className="absolute inset-0 rounded-full border-2 border-[#2196F3] opacity-0 group-hover:opacity-100 transition-all duration-750 scale-110 group-hover:scale-100"></div>
-                      <img
+                      <SafeImg
                         src={member.image}
                         alt={member.name}
                         className="w-full h-full object-cover object-top rounded-full border-2 border-[#E53935]/70 group-hover:border-[#E53935] transition-all duration-300"

@@ -245,7 +245,7 @@ const Competition = () => {
                 >
                   {/* Hero Image - Side */}
                   <div className="relative md:w-1/3 h-48 md:h-auto">
-                    <img
+                    <SafeImg
                       src={competition.heroImg}
                       alt={competition.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

@@ -163,7 +163,7 @@ const AboutUs = () => {
             {faculty.slice(0, 2).map((member, i) => (
               <div key={i} className="group relative">
                 <div className="relative bg-gray-900/60 backdrop-blur-sm rounded-2xl md:rounded-3xl p-6 md:p-10 text-center border border-gray-700/50 hover:border-[#2196F3]/50 transition-transform duration-300 transform group-hover:scale-105 min-w-[250px] md:min-w-[280px]">
-                  <img
+                  <SafeImg
                     className="rounded-full w-24 h-24 md:w-32 md:h-32 object-cover mx-auto mb-4 md:mb-6"
                     src={member.image}
                     alt={member.name}
@@ -187,7 +187,7 @@ const AboutUs = () => {
               <div key={i} className="group relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-gray-800/30 to-gray-900/30 rounded-2xl blur group-hover:blur-none transition-all duration-300"></div>
                 <div className="relative bg-gray-800/40 backdrop-blur-sm rounded-2xl p-4 md:p-6 text-center border border-gray-700/30 hover:border-[#2196F3]/50 transition-transform duration-300 transform group-hover:scale-105">
-                  <img
+                  <SafeImg
                     className="rounded-full w-20 h-20 md:w-24 md:h-24 object-cover mx-auto mb-3 md:mb-4"
                     src={member.image}
                     alt={member.name}
