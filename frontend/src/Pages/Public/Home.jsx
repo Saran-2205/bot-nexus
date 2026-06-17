@@ -149,8 +149,7 @@ const Home = () => {
               ) : latestProject ? (
                 <>
                   <div
-                    onClick={() => navigateTo("nexus-hq/login")}
-                    className="aspect-w-16 aspect-h-9 w-full cursor-pointer overflow-hidden rounded-lg shadow-[0_0_20px_rgba(255,0,0,0.2)] sm:shadow-[0_0_30px_rgba(255,0,0,0.2)]"
+                    className="aspect-w-16 aspect-h-9 w-full cursor-pointer overflow-hidden rounded-lg]"
                   >
                     <SafeImg
                       src={latestProject.img}
